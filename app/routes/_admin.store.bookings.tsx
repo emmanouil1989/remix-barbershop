@@ -1,13 +1,33 @@
 import { addMonths, getYear } from "date-fns";
 import { useState } from "react";
+import type { DropdownOption } from "~/components/Dropdown/Dropdown";
+import Dropdown from "~/components/Dropdown/Dropdown";
 
 export default function AdminStoreBookings() {
+  const [selectedDate, setSelectedDate] = useState<undefined | string>(
+    undefined,
+  );
+  const options = useDropdownOptions();
   return (
     <div className={"flex h-full w-full flex-col py-8"}>
-      <AppointmentScheduleHeader />
+      <div>
+        <Dropdown
+          selectedValue={selectedDate}
+          onChange={setSelectedDate}
+          options={options}
+        />
+      </div>
     </div>
   );
 }
+
+const useDropdownOptions = (): Array<DropdownOption> => {
+  return [
+    { value: "-1", label: "please select" },
+    { value: "in", label: "option 1" },
+    { value: "out", label: "option 2" },
+  ];
+};
 
 //function to use date-fns to get current month
 function getCurrentMonth(date: Date) {
