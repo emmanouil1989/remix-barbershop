@@ -52,7 +52,7 @@ export default function Dropdown({
       {isOpen && (
         <div
           className={
-            "block  w-full max-h-[400px] overflow-x-hidden overflow-y-auto py-1 border-solid border border-gray-600 absolute z-10 bg-white"
+            "block  w-full max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white"
           }
         >
           {options.map(option => {
