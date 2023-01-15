@@ -16,7 +16,7 @@ export default function Calendar() {
   return (
     <div
       className={
-        "flex flex-col max-w-[400px] py-4 border border-solid border-gray-600"
+        "flex flex-col max-w-[300px] py-4 border border-solid border-gray-600"
       }
     >
       <div className={"flex flex-row items-center justify-between mx-4 pl-1"}>
@@ -75,7 +75,9 @@ export default function Calendar() {
               {week.map((day, index) => (
                 <span
                   key={day + index}
-                  className={"table-cell text-sm align-middle"}
+                  className={
+                    "table-cell text-sm align-middle hover:bg-gray-200 hover:rounded-full cursor-pointer"
+                  }
                 >
                   {day}
                 </span>
