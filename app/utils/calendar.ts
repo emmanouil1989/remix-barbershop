@@ -1,7 +1,11 @@
-import { addMonths, getDaysInMonth, getYear } from "date-fns";
+import { addMonths, getDaysInMonth, getYear, getMonth } from "date-fns";
 
 export function getCurrentMonth(date: Date) {
   return date.toLocaleString("default", { month: "long" });
+}
+
+export function getMonthNumber(date: Date) {
+  return getMonth(date) + 1;
 }
 
 export function getMonthDays(date: Date) {

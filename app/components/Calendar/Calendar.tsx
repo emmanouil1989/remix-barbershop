@@ -3,12 +3,23 @@ import {
   getCurrentMonth,
   getCurrentYear,
   getMonthDays,
+  getMonthNumber,
   getNextMonth,
   getPreviousMonth,
 } from "~/utils/calendar";
+import { Link, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
-  const [date, setDate] = useState(new Date());
+  const [params] = useSearchParams();
+  const yearParam = Number(params.get("year"));
+  const monthParam = Number(params.get("month")) - 1;
+  const dayParam = Number(params.get("day"));
+
+  let dateParam = undefined;
+  if (yearParam && monthParam && dayParam) {
+    dateParam = new Date(yearParam, monthParam, dayParam);
+  }
+  const [date, setDate] = useState(dateParam || new Date());
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
   const arrayOfMonthDays = getMonthDays(date);
@@ -73,14 +84,17 @@ export default function Calendar() {
           {arrayOfMonthDays.map((week, index) => (
             <div className={"table-row h-[28px]"} key={index}>
               {week.map((day, index) => (
-                <span
+                <Link
+                  to={`/store/bookings?year=${year}&month=${getMonthNumber(
+                    date,
+                  )}&day=${day}`}
                   key={day + index}
                   className={
                     "table-cell text-sm align-middle hover:bg-gray-200 hover:rounded-full cursor-pointer"
                   }
                 >
                   {day}
-                </span>
+                </Link>
               ))}
             </div>
           ))}
