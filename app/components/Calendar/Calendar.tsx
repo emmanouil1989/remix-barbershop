@@ -83,19 +83,25 @@ export default function Calendar() {
         <div className={"table-row-group"}>
           {arrayOfMonthDays.map((week, index) => (
             <div className={"table-row h-[28px]"} key={index}>
-              {week.map((day, index) => (
-                <Link
-                  to={`/store/bookings?year=${year}&month=${getMonthNumber(
-                    date,
-                  )}&day=${day}`}
-                  key={day + index}
-                  className={
-                    "table-cell text-sm align-middle hover:bg-gray-200 hover:rounded-full cursor-pointer"
-                  }
-                >
-                  {day}
-                </Link>
-              ))}
+              {week.map((day, index) => {
+                const isSelected =
+                  dayParam === day && getMonthNumber(date) === monthParam + 1;
+                return (
+                  <Link
+                    to={`/store/bookings?year=${year}&month=${getMonthNumber(
+                      date,
+                    )}&day=${day}`}
+                    key={day + index}
+                    className={`table-cell text-sm align-middle ${
+                      !isSelected ? "hover:bg-gray-200" : ""
+                    } hover:rounded-full cursor-pointer ${
+                      isSelected ? "isSelected" : ""
+                    } `}
+                  >
+                    {day}
+                  </Link>
+                );
+              })}
             </div>
           ))}
         </div>

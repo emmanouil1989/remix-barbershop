@@ -45,3 +45,7 @@ body{
 .button{
   @apply bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded;
 }
+
+.isSelected{
+    @apply bg-gray-500 text-white font-bold rounded-full hover:bg-gray-400;
+}
