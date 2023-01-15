@@ -23,15 +23,14 @@ export default function Dropdown({
     <div className=" relative">
       <div
         className={
-          " flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer h-[40px] w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
+          " flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer  w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
         }
         onClick={() => setIsOpen(!isOpen)}
       >
         <button
-          type="button"
-          id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
+          className={"text-ellipsis"}
         >
           {label}
         </button>
@@ -53,7 +52,7 @@ export default function Dropdown({
       {isOpen && (
         <div
           className={
-            "block  w-[400px] max-h-[400px] overflow-x-hidden overflow-y-auto py-1 border-solid border border-gray-600 absolute z-10 bg-white"
+            "block  w-full max-h-[400px] overflow-x-hidden overflow-y-auto py-1 border-solid border border-gray-600 absolute z-10 bg-white"
           }
         >
           {options.map(option => {
