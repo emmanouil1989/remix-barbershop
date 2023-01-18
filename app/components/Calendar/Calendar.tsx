@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getCurrentMonth,
   getCurrentYear,
@@ -12,11 +12,16 @@ import {
 import { Link, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
-  const { dateState, dayParam, monthParam } = useCalendarContext();
+  const { dateState, dayParam, monthParam, yearParam } = useCalendarContext();
   const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
   const arrayOfMonthDays = getMonthDays(date);
+  useEffect(() => {
+    if (dayParam && monthParam && yearParam) {
+      setDate(new Date(year, monthParam, dayParam));
+    }
+  }, [monthParam, yearParam, dayParam]);
   return (
     <div
       className={
@@ -76,22 +81,25 @@ export default function Calendar() {
         <div className={"table-row-group"}>
           {arrayOfMonthDays.map((week, index) => (
             <div className={"table-row h-[28px]"} key={index}>
-              {week.map((day, index) => {
+              {week.map((dayRecord, index) => {
+                const isDuplicated = dayRecord.month !== getMonthNumber(date);
+
                 const isSelected =
-                  dayParam === day && getMonthNumber(date) === monthParam + 1;
+                  dayParam === dayRecord.day &&
+                  getMonthNumber(date) === monthParam + 1 &&
+                  !isDuplicated;
+
                 return (
                   <Link
-                    to={`/store/bookings?year=${year}&month=${getMonthNumber(
-                      date,
-                    )}&day=${day}`}
-                    key={day + index}
+                    to={`/store/bookings?year=${dayRecord.year}&month=${dayRecord.month}&day=${dayRecord.day}`}
+                    key={dayRecord.day + index}
                     className={`table-cell text-sm align-middle ${
                       !isSelected ? "hover:bg-gray-200" : ""
                     } hover:rounded-full cursor-pointer ${
                       isSelected ? "isSelected" : ""
-                    } `}
+                    } ${isDuplicated ? "text-gray-400" : ""}`}
                   >
-                    {day}
+                    {dayRecord.day}
                   </Link>
                 );
               })}
@@ -114,6 +122,5 @@ export function useInitialDateState() {
     dateParam = new Date(yearParam, monthParam, dayParam);
   }
   const dateState = useState(dateParam || new Date());
-  console.log("dateState", dateState);
   return { dateState, dayParam, monthParam, yearParam };
 }

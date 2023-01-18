@@ -31,22 +31,21 @@ export default function AdminStoreBookings() {
 function Scheduler() {
   const { dayParam, monthParam, yearParam } = useCalendarContext();
   const date = dayParam
-    ? new Date(yearParam, monthParam, dayParam + 1)
+    ? new Date(yearParam, monthParam, dayParam)
     : new Date();
-
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
 
   return (
     <div className={"flex h-full w-full"}>
       {weekDatesAndNamesArray.map(weekDay => (
         <div
-          key={weekDay.day}
+          key={weekDay.weekDate}
           className={
             "flex flex-col w-full h-20 border border-solid border-gray-600 justify-center items-center"
           }
         >
           <h2 className={"text-sm"}>{weekDay.weekInitial}</h2>
-          <h2>{weekDay.day}</h2>
+          <h2>{weekDay.weekDate}</h2>
         </div>
       ))}
     </div>

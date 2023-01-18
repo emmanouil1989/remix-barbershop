@@ -1,4 +1,14 @@
-import { addMonths, getDaysInMonth, getYear, getMonth } from "date-fns";
+import {
+  addMonths,
+  getDaysInMonth,
+  getYear,
+  getMonth,
+  getWeek,
+  getDate,
+  setDate,
+  getWeekOfMonth,
+  getDay,
+} from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
@@ -19,11 +29,29 @@ export function getMonthDays(date: Date) {
   let index = 0;
   const response = [];
   for (let i = 1; i <= dividedBySeven; i++) {
-    const groupOfSevenDays = [];
+    const groupOfSevenDays: Array<{
+      day: number;
+      month: number;
+      year: number;
+    }> = [];
 
     for (let j = index + 1; j <= index + 7; j++) {
       if (j <= daysInMonth) {
-        groupOfSevenDays.push(j);
+        groupOfSevenDays.push({
+          day: j,
+          month: getMonthNumber(date),
+          year: getYear(date),
+        });
+      }
+    }
+    if (groupOfSevenDays.length < 7) {
+      const diff = 7 - groupOfSevenDays.length;
+      for (let k = 1; k <= diff; k++) {
+        groupOfSevenDays.push({
+          day: k,
+          month: getMonthNumber(addMonths(date, 1)),
+          year: getYear(date),
+        });
       }
     }
     response.push(groupOfSevenDays);
@@ -43,16 +71,20 @@ export function getNextMonth(date: Date) {
 export function getPreviousMonth(date: Date) {
   return addMonths(date, -1);
 }
-
+//TODO need more work on next year
 export function getWeekDatesAndNames(date: Date) {
-  const sunday = new Date(date);
-  sunday.setDate(sunday.getDate() - sunday.getDay());
+  console.log("date", date);
+  const week = getWeekOfMonth(date);
+  console.log("week", week - 1);
+  const monthDays = getMonthDays(date);
+  console.log("monthDays", monthDays);
+  const weekDates = monthDays[week - 1];
   const weekDays = [];
   for (let i = 0; i < 7; i++) {
-    const day = new Date(sunday);
-    day.setDate(day.getDate() + i);
+    const day = new Date(weekDates[i].day);
     const weekInitial = day.toLocaleString("default", { weekday: "short" });
-    weekDays.push({ day: day.getDate(), weekInitial });
+    const weekDate = weekDates[i].day;
+    weekDays.push({ weekDate, weekInitial });
   }
   return weekDays;
 }
