@@ -45,7 +45,7 @@ function Scheduler() {
             "flex flex-col w-full h-20 border border-solid border-gray-600 justify-center items-center"
           }
         >
-          <h2>{weekDay.weekInitial}</h2>
+          <h2 className={"text-sm"}>{weekDay.weekInitial}</h2>
           <h2>{weekDay.day}</h2>
         </div>
       ))}
