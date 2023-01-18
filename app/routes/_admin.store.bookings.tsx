@@ -4,7 +4,7 @@ import type { DropdownOption } from "~/components/Dropdown/Dropdown";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
-import { CalendarContextProvider } from "~/utils/calendar";
+import { CalendarContextProvider, useCalendarContext } from "~/utils/calendar";
 
 type TimeViewsType = "Month" | "Week";
 
@@ -16,9 +16,19 @@ export default function AdminStoreBookings() {
 
       <CalendarContextProvider>
         <Calendar />
+        <Scheduler />
       </CalendarContextProvider>
     </div>
   );
+}
+
+function Scheduler() {
+  const { dayParam, monthParam, yearParam } = useCalendarContext();
+  const date = dayParam
+    ? new Date(yearParam, monthParam, dayParam + 1)
+    : new Date();
+
+  return <div>{date.toISOString()}</div>;
 }
 
 const useDropdownOptions = (): Array<DropdownOption> => {
@@ -27,8 +37,6 @@ const useDropdownOptions = (): Array<DropdownOption> => {
     { value: "Week", label: "Week View" },
   ];
 };
-
-//function to use date-fns to get current month
 
 type AppointmentScheduleHeaderProps = {
   timeViewState: [TimeViewsType, Dispatch<SetStateAction<TimeViewsType>>];

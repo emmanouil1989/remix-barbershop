@@ -44,11 +44,7 @@ export function getPreviousMonth(date: Date) {
   return addMonths(date, -1);
 }
 
-type CalendarContextData = {
-  dateState: [Date, (date: Date) => void];
-  monthParam: number;
-  dayParam: number;
-};
+type CalendarContextData = ReturnType<typeof useInitialDateState>;
 export const CalendarContext = createContext<CalendarContextData | undefined>(
   undefined,
 );
@@ -59,9 +55,9 @@ type CalendarContextProviderProps = {
 export function CalendarContextProvider({
   children,
 }: CalendarContextProviderProps) {
-  const { dateState, monthParam, dayParam } = useInitialDateState();
+  const dateState = useInitialDateState();
   return (
-    <CalendarContext.Provider value={{ dateState, monthParam, dayParam }}>
+    <CalendarContext.Provider value={{ ...dateState }}>
       {children}
     </CalendarContext.Provider>
   );

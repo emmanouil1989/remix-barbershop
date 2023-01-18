@@ -114,5 +114,6 @@ export function useInitialDateState() {
     dateParam = new Date(yearParam, monthParam, dayParam);
   }
   const dateState = useState(dateParam || new Date());
-  return { dateState, dayParam, monthParam };
+  console.log("dateState", dateState);
+  return { dateState, dayParam, monthParam, yearParam };
 }
