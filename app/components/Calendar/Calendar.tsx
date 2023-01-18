@@ -6,24 +6,16 @@ import {
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
+  weekDaysInitialsArray,
 } from "~/utils/calendar";
 import { Link, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
-  const [params] = useSearchParams();
-  const yearParam = Number(params.get("year"));
-  const monthParam = Number(params.get("month")) - 1;
-  const dayParam = Number(params.get("day"));
-
-  let dateParam = undefined;
-  if (yearParam && monthParam && dayParam) {
-    dateParam = new Date(yearParam, monthParam, dayParam);
-  }
-  const [date, setDate] = useState(dateParam || new Date());
+  const { dateState, dayParam, monthParam } = useInitialDateState();
+  const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
   const arrayOfMonthDays = getMonthDays(date);
-  const weekDaysInitialsArray = ["S", "M", "T", "W", "T", "F", "S"];
   return (
     <div
       className={
@@ -108,4 +100,18 @@ export default function Calendar() {
       </div>
     </div>
   );
+}
+
+export function useInitialDateState() {
+  const [params] = useSearchParams();
+  const yearParam = Number(params.get("year"));
+  const monthParam = Number(params.get("month")) - 1;
+  const dayParam = Number(params.get("day"));
+
+  let dateParam = undefined;
+  if (yearParam && monthParam && dayParam) {
+    dateParam = new Date(yearParam, monthParam, dayParam);
+  }
+  const dateState = useState(dateParam || new Date());
+  return { dateState, dayParam, monthParam };
 }

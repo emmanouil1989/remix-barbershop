@@ -7,6 +7,7 @@ export function getCurrentMonth(date: Date) {
 export function getMonthNumber(date: Date) {
   return getMonth(date) + 1;
 }
+export const weekDaysInitialsArray = ["S", "M", "T", "W", "T", "F", "S"];
 
 export function getMonthDays(date: Date) {
   const daysInMonth = getDaysInMonth(date);
