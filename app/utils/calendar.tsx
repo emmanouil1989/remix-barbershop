@@ -44,6 +44,19 @@ export function getPreviousMonth(date: Date) {
   return addMonths(date, -1);
 }
 
+export function getWeekDatesAndNames(date: Date) {
+  const sunday = new Date(date);
+  sunday.setDate(sunday.getDate() - sunday.getDay());
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(sunday);
+    day.setDate(day.getDate() + i);
+    const weekInitial = day.toLocaleString("default", { weekday: "short" });
+    weekDays.push({ day: day.getDate(), weekInitial });
+  }
+  return weekDays;
+}
+
 type CalendarContextData = ReturnType<typeof useInitialDateState>;
 export const CalendarContext = createContext<CalendarContextData | undefined>(
   undefined,

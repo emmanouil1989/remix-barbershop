@@ -4,7 +4,11 @@ import type { DropdownOption } from "~/components/Dropdown/Dropdown";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
-import { CalendarContextProvider, useCalendarContext } from "~/utils/calendar";
+import {
+  CalendarContextProvider,
+  getWeekDatesAndNames,
+  useCalendarContext,
+} from "~/utils/calendar";
 
 type TimeViewsType = "Month" | "Week";
 
@@ -15,8 +19,10 @@ export default function AdminStoreBookings() {
       <AppointmentScheduleHeader timeViewState={timeViewState} />
 
       <CalendarContextProvider>
-        <Calendar />
-        <Scheduler />
+        <div className={"grid grid-cols-[max-content_1fr] gap-8"}>
+          <Calendar />
+          <Scheduler />
+        </div>
       </CalendarContextProvider>
     </div>
   );
@@ -28,7 +34,23 @@ function Scheduler() {
     ? new Date(yearParam, monthParam, dayParam + 1)
     : new Date();
 
-  return <div>{date.toISOString()}</div>;
+  const weekDatesAndNamesArray = getWeekDatesAndNames(date);
+
+  return (
+    <div className={"flex h-full w-full"}>
+      {weekDatesAndNamesArray.map(weekDay => (
+        <div
+          key={weekDay.day}
+          className={
+            "flex flex-col w-full h-20 border border-solid border-gray-600 justify-center items-center"
+          }
+        >
+          <h2>{weekDay.weekInitial}</h2>
+          <h2>{weekDay.day}</h2>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 const useDropdownOptions = (): Array<DropdownOption> => {
