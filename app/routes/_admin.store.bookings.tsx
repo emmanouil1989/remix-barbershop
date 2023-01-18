@@ -1,9 +1,10 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import type { DropdownOption } from "~/components/Dropdown/Dropdown";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
+import { CalendarContextProvider } from "~/utils/calendar";
 
 type TimeViewsType = "Month" | "Week";
 
@@ -12,7 +13,10 @@ export default function AdminStoreBookings() {
   return (
     <div className={"flex h-full w-full flex-col py-8 gap-4"}>
       <AppointmentScheduleHeader timeViewState={timeViewState} />
-      <Calendar />
+
+      <CalendarContextProvider>
+        <Calendar />
+      </CalendarContextProvider>
     </div>
   );
 }

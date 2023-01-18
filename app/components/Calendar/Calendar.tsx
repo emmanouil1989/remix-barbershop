@@ -6,12 +6,13 @@ import {
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
+  useCalendarContext,
   weekDaysInitialsArray,
 } from "~/utils/calendar";
 import { Link, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
-  const { dateState, dayParam, monthParam } = useInitialDateState();
+  const { dateState, dayParam, monthParam } = useCalendarContext();
   const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
