@@ -55,6 +55,9 @@ export function getListOfSevenDayLists(date: Date) {
   }
   return listOfSevenDayLists;
 }
+export function nextYear(date: Date) {
+  return getYear(addMonths(date, 12));
+}
 
 export function getCurrentYear(date: Date) {
   return getYear(date);

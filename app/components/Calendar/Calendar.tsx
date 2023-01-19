@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   getCurrentMonth,
   getCurrentYear,
@@ -6,22 +6,19 @@ import {
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
+  nextYear,
   useCalendarContext,
   weekDaysInitialsArray,
 } from "~/utils/calendar";
-import { Link, useSearchParams } from "@remix-run/react";
+import { useNavigate, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
-  const { dateState, dayParam, monthParam, yearParam } = useCalendarContext();
+  const { dateState, dayParam, monthParam } = useCalendarContext();
   const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
   const arrayOfMonthDays = getListOfSevenDayLists(date);
-  useEffect(() => {
-    if (dayParam && monthParam && yearParam) {
-      setDate(new Date(yearParam, monthParam, dayParam));
-    }
-  }, [monthParam, yearParam, dayParam, setDate]);
+  const navigate = useNavigate();
   return (
     <div
       className={
@@ -89,9 +86,26 @@ export default function Calendar() {
                   getMonthNumber(date) === monthParam + 1 &&
                   !isDuplicated;
 
+                const year =
+                  isDuplicated && dayRecord.month === 1
+                    ? nextYear(
+                        new Date(
+                          dayRecord.year,
+                          dayRecord.month - 1,
+                          dayRecord.day,
+                        ),
+                      )
+                    : dayRecord.year;
+
+                function onDateSelect() {
+                  setDate(new Date(year, dayRecord.month - 1, dayRecord.day));
+                  navigate(
+                    `/store/bookings?year=${year}&month=${dayRecord.month}&day=${dayRecord.day}`,
+                  );
+                }
                 return (
-                  <Link
-                    to={`/store/bookings?year=${dayRecord.year}&month=${dayRecord.month}&day=${dayRecord.day}`}
+                  <div
+                    onClick={onDateSelect}
                     key={dayRecord.day + index}
                     className={`table-cell text-sm align-middle ${
                       !isSelected ? "hover:bg-gray-200" : ""
@@ -100,7 +114,7 @@ export default function Calendar() {
                     } ${isDuplicated ? "text-gray-400" : ""}`}
                   >
                     {dayRecord.day}
-                  </Link>
+                  </div>
                 );
               })}
             </div>
