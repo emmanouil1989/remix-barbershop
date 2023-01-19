@@ -64,7 +64,11 @@ export default function Calendar() {
           </svg>
         </div>
       </div>
-      <div className={"table w-full text-center table-fixed py-4"}>
+      <div
+        className={
+          "table border-spacing-1 border-separate w-full text-center table-fixed py-4"
+        }
+      >
         <div className={"table-row h-[28px]"}>
           {weekDaysInitialsArray.map((day, index) => (
             <span
