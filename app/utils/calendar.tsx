@@ -24,21 +24,21 @@ export function getMonthNumber(date: Date) {
 export const weekDaysInitialsArray = ["S", "M", "T", "W", "T", "F", "S"];
 
 export function getMonthDays(date: Date) {
-  const daysInMonth = getDaysInMonth(date);
-  const dividedBySeven = Math.ceil(daysInMonth / 7);
+  const numberOfDayInMonth = getDaysInMonth(date);
+  const numberOfWeeksInMonth = Math.ceil(numberOfDayInMonth / 7);
   let index = 0;
-  const response = [];
-  for (let i = 1; i <= dividedBySeven; i++) {
+  const listOfSevenDayLists = [];
+  for (let weekNumber = 1; weekNumber <= numberOfWeeksInMonth; weekNumber++) {
     const groupOfSevenDays: Array<{
       day: number;
       month: number;
       year: number;
     }> = [];
 
-    for (let j = index + 1; j <= index + 7; j++) {
-      if (j <= daysInMonth) {
+    for (let dayNumber = index + 1; dayNumber <= index + 7; dayNumber++) {
+      if (dayNumber <= numberOfDayInMonth) {
         groupOfSevenDays.push({
-          day: j,
+          day: dayNumber,
           month: getMonthNumber(date),
           year: getYear(date),
         });
@@ -54,10 +54,10 @@ export function getMonthDays(date: Date) {
         });
       }
     }
-    response.push(groupOfSevenDays);
+    listOfSevenDayLists.push(groupOfSevenDays);
     index = index + 7;
   }
-  return response;
+  return listOfSevenDayLists;
 }
 
 export function getCurrentYear(date: Date) {
