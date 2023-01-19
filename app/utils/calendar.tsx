@@ -3,11 +3,7 @@ import {
   getDaysInMonth,
   getYear,
   getMonth,
-  getWeek,
   getDate,
-  setDate,
-  getWeekOfMonth,
-  getDay,
 } from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
@@ -23,7 +19,7 @@ export function getMonthNumber(date: Date) {
 }
 export const weekDaysInitialsArray = ["S", "M", "T", "W", "T", "F", "S"];
 
-export function getMonthDays(date: Date) {
+export function getListOfSevenDayLists(date: Date) {
   const numberOfDayInMonth = getDaysInMonth(date);
   const numberOfWeeksInMonth = Math.ceil(numberOfDayInMonth / 7);
   let index = 0;
@@ -71,14 +67,16 @@ export function getNextMonth(date: Date) {
 export function getPreviousMonth(date: Date) {
   return addMonths(date, -1);
 }
-//TODO need more work on next year
+
+export function getWeekNumberInMonth(date: Date) {
+  const day = getDate(date);
+  //which week of the month is the day in
+  return Math.ceil(day / 7);
+}
 export function getWeekDatesAndNames(date: Date) {
-  console.log("date", date);
-  const week = getWeekOfMonth(date);
-  console.log("week", week - 1);
-  const monthDays = getMonthDays(date);
-  console.log("monthDays", monthDays);
-  const weekDates = monthDays[week - 1];
+  const week = getWeekNumberInMonth(date);
+  const listOfSevenDayLists = getListOfSevenDayLists(date);
+  const weekDates = listOfSevenDayLists[week - 1];
   const weekDays = [];
   for (let i = 0; i < 7; i++) {
     const day = new Date(weekDates[i].day);

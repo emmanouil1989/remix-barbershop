@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getCurrentMonth,
   getCurrentYear,
-  getMonthDays,
+  getListOfSevenDayLists,
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
@@ -16,12 +16,12 @@ export default function Calendar() {
   const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
-  const arrayOfMonthDays = getMonthDays(date);
+  const arrayOfMonthDays = getListOfSevenDayLists(date);
   useEffect(() => {
     if (dayParam && monthParam && yearParam) {
-      setDate(new Date(year, monthParam, dayParam));
+      setDate(new Date(yearParam, monthParam, dayParam));
     }
-  }, [monthParam, yearParam, dayParam]);
+  }, [monthParam, yearParam, dayParam, setDate]);
   return (
     <div
       className={
