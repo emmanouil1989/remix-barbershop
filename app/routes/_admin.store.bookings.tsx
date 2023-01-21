@@ -6,6 +6,7 @@ import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
 import {
   CalendarContextProvider,
+  getHoursOfTheDay,
   getWeekDatesAndNames,
   useCalendarContext,
 } from "~/utils/calendar";
@@ -34,18 +35,47 @@ function Scheduler() {
     ? new Date(yearParam, monthParam, dayParam)
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
-
+  const dayHours = getHoursOfTheDay();
   return (
-    <div className={"flex h-full w-full"}>
-      {weekDatesAndNamesArray.map(weekDay => (
+    <div className={"flex flex-col w-full h-full"}>
+      <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
+      <div
+        className={
+          "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-20rem)]"
+        }
+      >
+        {weekDatesAndNamesArray.map(({ weekDay }) => (
+          <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
+            {dayHours.map(hour => (
+              <div
+                key={hour}
+                className={
+                  "flex flex-col border-solid border border-gray-600 w-full h-16"
+                }
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type ScheduleHeaderProps = {
+  weekDatesAndNamesArray: ReturnType<typeof getWeekDatesAndNames>;
+};
+function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
+  return (
+    <div className={"flex"}>
+      {weekDatesAndNamesArray.map(weekDateAndNameRecord => (
         <div
-          key={weekDay.weekDate}
+          key={weekDateAndNameRecord.weekDay}
           className={
-            "flex flex-col w-full h-20 border border-solid border-gray-600 justify-center items-center"
+            "flex flex-col w-full h-20 border border-solid border-b-0 border-gray-600 justify-center items-center"
           }
         >
-          <h2 className={"text-sm"}>{weekDay.weekInitial}</h2>
-          <h2>{weekDay.weekDate}</h2>
+          <h2 className={"text-sm"}>{weekDateAndNameRecord.weekInitial}</h2>
+          <h2>{weekDateAndNameRecord.weekDay}</h2>
         </div>
       ))}
     </div>

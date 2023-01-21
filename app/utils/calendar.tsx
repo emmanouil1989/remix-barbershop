@@ -84,10 +84,18 @@ export function getWeekDatesAndNames(date: Date) {
   for (let i = 0; i < 7; i++) {
     const day = new Date(weekDates[i].day);
     const weekInitial = day.toLocaleString("default", { weekday: "short" });
-    const weekDate = weekDates[i].day;
-    weekDays.push({ weekDate, weekInitial });
+    const weekDay = weekDates[i].day;
+    weekDays.push({ weekDay, weekInitial });
   }
   return weekDays;
+}
+
+export function getHoursOfTheDay() {
+  const hours = [];
+  for (let i = 0; i < 24; i++) {
+    hours.push(i);
+  }
+  return hours;
 }
 
 type CalendarContextData = ReturnType<typeof useInitialDateState>;
