@@ -24,7 +24,7 @@ export default function AdminServices() {
     >
       <div
         className={
-          "flex flex-1 xl:flex-none xl:w-[1200px] justify-start  flex-col h-full sm:p-8 p-4"
+          "flex flex-1 xl:flex-none xl:w-[1200px] justify-start  flex-col h-full  p-4"
         }
       >
         <h1 className={"py-4 text-3xl font-bold"}>Admin</h1>

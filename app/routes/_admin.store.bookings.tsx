@@ -15,11 +15,11 @@ type TimeViewsType = "Month" | "Week";
 export default function AdminStoreBookings() {
   const timeViewState = useState<TimeViewsType>("Month");
   return (
-    <div className={"flex h-full w-full flex-col py-8 gap-4"}>
+    <div className={"flex h-full w-full flex-col py-4 gap-4"}>
       <AppointmentScheduleHeader timeViewState={timeViewState} />
 
       <CalendarContextProvider>
-        <div className={"grid grid-cols-[max-content_1fr] gap-8"}>
+        <div className={"grid grid-cols-[max-content_1fr] gap-4"}>
           <Calendar />
           <Scheduler />
         </div>
