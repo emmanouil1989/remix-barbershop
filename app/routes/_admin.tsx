@@ -40,7 +40,7 @@ export default function AdminServices() {
 
 function AdminNav() {
   return (
-    <nav className={"flex w-full h-16 border-gray-600 border-solid border"}>
+    <nav className={"flex w-full h-16 border-gray-600 border-solid border p-4"}>
       <ul className={"flex flex-row w-full items-center"}>
         <AdminListItem to={"/store/services"} itemName={"Services"} />
         <AdminListItem to={"/store/bookings"} itemName={"Bookings"} />
