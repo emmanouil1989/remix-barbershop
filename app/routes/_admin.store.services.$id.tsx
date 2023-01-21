@@ -42,7 +42,7 @@ export async function action({ request, params }: ActionArgs) {
       enabled: enabled === "true",
     },
   });
-  return redirect("/store/services");
+  return redirect(`/store/services/${serviceId}`);
 }
 
 export async function loader({ params }: LoaderArgs) {
