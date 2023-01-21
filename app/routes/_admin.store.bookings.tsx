@@ -101,11 +101,7 @@ function AppointmentScheduleHeader({
   const options = useDropdownOptions();
   const [timeView, setTimeView] = timeViewState;
   return (
-    <div
-      className={
-        "flex flex-row items-center justify-end gap-4 border border-solid border-gray-600 p-4"
-      }
-    >
+    <div className={"flex flex-row items-center justify-end gap-4 pb-4"}>
       <Dropdown
         selectedValue={timeView}
         onChange={(value: string) => {
