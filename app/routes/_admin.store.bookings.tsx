@@ -50,7 +50,7 @@ function Scheduler() {
               <div
                 key={hour}
                 className={
-                  "flex flex-col border-solid border border-gray-600 w-full h-16"
+                  "flex flex-col border-solid [&:not(:last-child)]:border-b-0 border border-gray-600 w-full h-16"
                 }
               />
             ))}
