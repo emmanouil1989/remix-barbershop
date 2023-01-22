@@ -15,9 +15,13 @@ export const validator = withZod(
   z.object({
     email: z
       .string()
+      .trim()
       .min(1, { message: "Email is required" })
       .email("Must be a valid email"),
-    password: z.string().min(8, { message: "Bust be at least 8 characters" }),
+    password: z
+      .string()
+      .trim()
+      .min(8, { message: "Bust be at least 8 characters" }),
   }),
 );
 export async function action({ request }: ActionArgs) {

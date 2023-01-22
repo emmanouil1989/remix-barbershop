@@ -1,5 +1,5 @@
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import type { ActionArgs, SerializeFrom } from "@remix-run/node";
+import type { SerializeFrom } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
 import { json } from "@remix-run/node";
@@ -23,22 +23,6 @@ export async function loader() {
   return json({ storeServices });
 }
 
-export async function action({ request }: ActionArgs) {
-  const body = new URLSearchParams(await request.text());
-  const id = body.get("id");
-  const enabled = body.get("enabled");
-  invariant(id, "id is required");
-  invariant(enabled, "enabled is required");
-  const service = await prisma.storeServices.update({
-    where: {
-      id: id,
-    },
-    data: {
-      enabled: enabled === "true",
-    },
-  });
-  return json({ service });
-}
 export default function AdminServices() {
   const { storeServices } = useLoaderData<typeof loader>();
   return (

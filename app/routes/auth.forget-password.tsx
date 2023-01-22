@@ -17,6 +17,7 @@ const validator = withZod(
   z.object({
     email: z
       .string()
+      .trim()
       .min(1, { message: "Email is required" })
       .email("Must be a valid email"),
   }),

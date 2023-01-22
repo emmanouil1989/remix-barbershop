@@ -17,15 +17,22 @@ const validator = withZod(
     .object({
       email: z
         .string()
+        .trim()
         .min(1, { message: "Email is required" })
         .email("Must be a valid email"),
-      password: z.string().min(8, { message: "Bust be at least 8 characters" }),
+      password: z
+        .string()
+        .trim()
+        .min(8, { message: "Bust be at least 8 characters" }),
       confirmPassword: z
         .string()
         .min(8, { message: "Bust be at least 8 characters" }),
-      firstName: z.string().min(1, { message: "First name is required" }),
-      lastName: z.string().min(1, { message: "Last name is required" }),
-      mobile: z.string().min(1, { message: "Mobile is required" }),
+      firstName: z
+        .string()
+        .trim()
+        .min(1, { message: "First name is required" }),
+      lastName: z.string().trim().min(1, { message: "Last name is required" }),
+      mobile: z.string().trim().min(1, { message: "Mobile is required" }),
     })
     .refine(data => data.password === data.confirmPassword, {
       message: "Passwords do not match",

@@ -21,9 +21,11 @@ const validator = withZod(
     .object({
       password: z
         .string()
+        .trim()
         .min(8, { message: "Password must be at least 8 characters" }),
       confirmPassword: z
         .string()
+        .trim()
         .min(8, { message: "Password must be at least 8 characters" }),
     })
     .refine(data => data.password === data.confirmPassword, {

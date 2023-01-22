@@ -12,9 +12,13 @@ import Button from "~/components/button/Button";
 
 const Validator = withZod(
   zod.object({
-    name: zod.string().min(1, { message: "Name is required" }),
-    price: zod.string().min(1, { message: "Price is required" }),
-    enabled: zod.string(),
+    name: zod.string().trim().min(1, { message: "Name is required" }),
+    price: zod
+      .string()
+      .trim()
+      .min(1, { message: "Price is required" })
+      .max(11, { message: "Price is too long" }),
+    enabled: zod.string().trim(),
   }),
 );
 

@@ -32,7 +32,10 @@ export async function action({ request }: ActionArgs) {
 const validator = withZod(
   zod.object({
     name: zod.string().min(1, { message: "Name is required" }),
-    price: zod.string().min(1, { message: "Price is required" }),
+    price: zod
+      .string()
+      .min(1, { message: "Price is required" })
+      .max(11, { message: "Price is too long" }),
   }),
 );
 export default function CreateService() {
