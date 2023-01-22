@@ -12,6 +12,9 @@ export async function loader() {
   const store = await prisma.store.findFirst();
   invariant(store, "No store found");
   const storeServices = await prisma.storeServices.findMany({
+    orderBy: {
+      name: "asc",
+    },
     where: {
       storeId: store.id,
     },
