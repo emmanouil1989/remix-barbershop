@@ -35,30 +35,38 @@ function Scheduler() {
     ? new Date(yearParam, monthParam, dayParam)
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
-  const dayHours = getHoursOfTheDay();
   return (
     <div className={"flex flex-col w-full h-full"}>
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
-      <div
-        className={
-          "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-20rem)]"
-        }
-      >
-        {weekDatesAndNamesArray.map(({ weekDay }, index) => (
-          <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
-            {dayHours.map(hour => (
-              <div
-                key={hour}
-                className={`flex flex-col ${
-                  index === weekDatesAndNamesArray.length - 1
-                    ? "border-r border-solid border-gray-600"
-                    : "border-r-0"
-                } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      <ScheduleBody weekDatesAndNamesArray={weekDatesAndNamesArray} />
+    </div>
+  );
+}
+
+type ScheduleBodyProps = ScheduleHeaderProps;
+function ScheduleBody({ weekDatesAndNamesArray }: ScheduleBodyProps) {
+  const dayHours = getHoursOfTheDay();
+
+  return (
+    <div
+      className={
+        "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-20rem)]"
+      }
+    >
+      {weekDatesAndNamesArray.map(({ weekDay }, index) => (
+        <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
+          {dayHours.map(hour => (
+            <div
+              key={hour}
+              className={`flex flex-col ${
+                index === weekDatesAndNamesArray.length - 1
+                  ? "border-r border-solid border-gray-600"
+                  : "border-r-0"
+              } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
@@ -76,9 +84,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
         >
           <div
             key={weekDateAndNameRecord.weekDay}
-            className={
-              "flex flex-col w-full h-20   justify-center items-center"
-            }
+            className={"flex flex-col w-full h-15    items-center"}
           >
             <h2 className={"text-sm"}>{weekDateAndNameRecord.weekInitial}</h2>
             <h2>{weekDateAndNameRecord.weekDay}</h2>
