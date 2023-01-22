@@ -22,7 +22,7 @@ export default function Calendar() {
   return (
     <div
       className={
-        "flex flex-col max-w-[300px] max-h-[270px] py-4 border border-solid border-gray-600"
+        "flex flex-col max-w-[300px] max-h-[270px] mt-16 p-4 border border-solid border-gray-600"
       }
     >
       <div className={"flex flex-row items-center justify-between mx-4 pl-1"}>
