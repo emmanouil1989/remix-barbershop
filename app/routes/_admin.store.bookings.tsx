@@ -53,20 +53,31 @@ function ScheduleBody({ weekDatesAndNamesArray }: ScheduleBodyProps) {
         "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-20rem)]"
       }
     >
-      {weekDatesAndNamesArray.map(({ weekDay }, index) => (
-        <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
+      {[
+        <div key={"extra-column"} className={"grid grid-flow-row"}>
           {dayHours.map(hour => (
             <div
               key={hour}
-              className={`flex flex-col ${
-                index === weekDatesAndNamesArray.length - 1
-                  ? "border-r border-solid border-gray-600"
-                  : "border-r-0"
-              } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
-            />
+              className={`flex flex-col w-4 h-16 border-t border-solid border-gray-600`}
+            ></div>
           ))}
-        </div>
-      ))}
+        </div>,
+
+        ...weekDatesAndNamesArray.map(({ weekDay }, index) => (
+          <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
+            {dayHours.map(hour => (
+              <div
+                key={hour}
+                className={`flex flex-col ${
+                  index === weekDatesAndNamesArray.length - 1
+                    ? "border-r border-solid border-gray-600"
+                    : "border-r-0"
+                } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
+              />
+            ))}
+          </div>
+        )),
+      ]}
     </div>
   );
 }
@@ -77,21 +88,27 @@ type ScheduleHeaderProps = {
 function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
   return (
     <div className={"flex"}>
-      {weekDatesAndNamesArray.map(weekDateAndNameRecord => (
-        <div
-          key={weekDateAndNameRecord.weekDay}
-          className={"flex flex-col w-full h-full"}
-        >
+      {[
+        <div key={"extra"} className={"flex flex-col"}>
+          <div className={"flex flex-col  items-center"}></div>
+          <div className={"h-6 w-4"} />
+        </div>,
+        ...weekDatesAndNamesArray.map(weekDateAndNameRecord => (
           <div
             key={weekDateAndNameRecord.weekDay}
-            className={"flex flex-col w-full h-15    items-center"}
+            className={"flex flex-col w-full h-full"}
           >
-            <h2 className={"text-sm"}>{weekDateAndNameRecord.weekInitial}</h2>
-            <h2>{weekDateAndNameRecord.weekDay}</h2>
+            <div
+              key={weekDateAndNameRecord.weekDay}
+              className={"flex flex-col w-full h-15    items-center"}
+            >
+              <h2 className={"text-sm"}>{weekDateAndNameRecord.weekInitial}</h2>
+              <h2>{weekDateAndNameRecord.weekDay}</h2>
+            </div>
+            <div className={"h-6 w-4 border-l border-solid border-gray-600"} />
           </div>
-          <div className={"h-6 w-4 border-l border-solid border-gray-600"} />
-        </div>
-      ))}
+        )),
+      ]}
     </div>
   );
 }
