@@ -38,7 +38,6 @@ export default function Dropdown({
           " flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer  w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
         }
         onClick={() => setIsOpen(!isOpen)}
-        // onBlur={() => setIsOpen(false)}
       >
         <button
           aria-haspopup="true"
