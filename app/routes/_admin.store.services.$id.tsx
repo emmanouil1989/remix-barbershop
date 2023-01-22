@@ -17,7 +17,11 @@ const Validator = withZod(
       .string()
       .trim()
       .min(1, { message: "Price is required" })
-      .max(11, { message: "Price is too long" }),
+      .max(11, { message: "Price is too long" })
+      .regex(/^[0-9]*(\.[0-9]{0,2})?$/, {
+        message: "Price must be in the format of 0.00",
+      }),
+
     enabled: zod.string().trim(),
   }),
 );
@@ -87,7 +91,7 @@ export default function ViewServicePage() {
           <Input name={"name"} label={"Service Name:"} type={"text"} />
         </div>
         <div className={"flex flex-col "}>
-          <Input name={"price"} label={"Price:"} type={"number"} step="0.01" />
+          <Input name={"price"} label={"Price:"} type={"number"} step="any" />
         </div>
         <div key={service.id} className={"flex  gap-4"}>
           <label htmlFor={"enabled"}>Enabled:</label>
