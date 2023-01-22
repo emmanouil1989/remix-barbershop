@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type DropdownProps = {
   selectedValue?: string;
@@ -17,15 +17,28 @@ export default function Dropdown({
   onChange,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const optionsRecord = useOptionsRecord(options);
   const label = optionsRecord[selectedValue];
+  function handleClickOutside(event: MouseEvent) {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  }
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, ref]);
   return (
-    <div className=" relative">
+    <div className=" relative" ref={ref}>
       <div
         className={
           " flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer  w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
         }
         onClick={() => setIsOpen(!isOpen)}
+        // onBlur={() => setIsOpen(false)}
       >
         <button
           aria-haspopup="true"
@@ -64,6 +77,7 @@ export default function Dropdown({
                 }
                 onClick={() => {
                   setIsOpen(false);
+
                   onChange(option.value);
                 }}
               >
