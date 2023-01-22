@@ -65,7 +65,7 @@ function ServiceListItem({
           <span>{service.name}</span>{" "}
         </ListItemContainer>
         <ListItemContainer className={"justify-end pr-4"}>
-          <span>{service.price}</span>
+          <span>{`${service.price} `}&euro;</span>
         </ListItemContainer>
       </li>
     </Link>
