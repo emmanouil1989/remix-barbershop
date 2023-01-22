@@ -83,7 +83,7 @@ export default function ViewServicePage() {
           <Input name={"name"} label={"Service Name:"} type={"text"} />
         </div>
         <div className={"flex flex-col "}>
-          <Input name={"price"} label={"Price:"} type={"number"} />
+          <Input name={"price"} label={"Price:"} type={"number"} step="0.01" />
         </div>
         <div key={service.id} className={"flex  gap-4"}>
           <label htmlFor={"enabled"}>Enabled:</label>

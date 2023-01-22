@@ -8,12 +8,15 @@ type MyInputProps = {
 
 type Props = MyInputProps & Omit<InputHTMLAttributes<HTMLInputElement>, "name">;
 
-export const Input = ({ name, label, type, className }: Props) => {
+export const Input = ({ name, label, type, className, ...rest }: Props) => {
   const { error, getInputProps } = useField(name);
   return (
     <>
       <label htmlFor={name}>{label}</label>
-      <input {...getInputProps({ id: name, type })} className={className} />
+      <input
+        {...getInputProps({ id: name, type, ...rest })}
+        className={className}
+      />
       {error && <span className="text-red-600 text-base">{error}</span>}
     </>
   );
