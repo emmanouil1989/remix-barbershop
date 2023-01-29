@@ -58,7 +58,7 @@ function ScheduleBody({ weekDatesAndNamesArray }: ScheduleBodyProps) {
           {dayHours.map(hour => (
             <div
               key={hour}
-              className={`flex flex-col w-4 h-16 border-t border-solid border-gray-600`}
+              className={`flex flex-col w-3 h-16 border-t border-solid border-gray-600`}
             ></div>
           ))}
         </div>,
@@ -91,7 +91,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
       {[
         <div key={"extra"} className={"flex flex-col"}>
           <div className={"flex flex-col  items-center"}></div>
-          <div className={"h-6 w-4"} />
+          <div className={"h-6 w-3"} />
         </div>,
         ...weekDatesAndNamesArray.map(weekDateAndNameRecord => (
           <div
