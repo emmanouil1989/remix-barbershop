@@ -90,10 +90,21 @@ export function getWeekDatesAndNames(date: Date) {
   return weekDays;
 }
 
+//function to return  an array with day numbers concatenated with am and pm string
 export function getHoursOfTheDay() {
   const hours = [];
   for (let i = 0; i < 24; i++) {
-    hours.push(i);
+    if (i < 12) {
+      if (i === 0) {
+        hours.push("");
+      } else {
+        hours.push(`${i} AM`);
+      }
+    } else if (i === 12) {
+      hours.push(`${i} PM`);
+    } else {
+      hours.push(`${i - 12} PM`);
+    }
   }
   return hours;
 }
