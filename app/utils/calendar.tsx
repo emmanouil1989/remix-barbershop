@@ -82,7 +82,12 @@ export function getWeekDatesAndNames(date: Date) {
   const weekDates = listOfSevenDayLists[week - 1];
   const weekDays = [];
   for (let i = 0; i < 7; i++) {
-    const day = new Date(weekDates[i].day);
+    const weekDayRecord = weekDates[i];
+    const day = new Date(
+      weekDayRecord.year,
+      weekDayRecord.month - 1,
+      weekDayRecord.day,
+    );
     const weekInitial = day.toLocaleString("default", { weekday: "short" });
     const weekDay = weekDates[i].day;
     weekDays.push({ weekDay, weekInitial });
