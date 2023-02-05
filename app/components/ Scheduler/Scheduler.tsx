@@ -74,6 +74,7 @@ type ScheduleHeaderProps = {
   weekDatesAndNamesArray: ReturnType<typeof getWeekDatesAndNames>;
 };
 function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
+  const { dayParam } = useCalendarContext();
   return (
     <div className={"flex"}>
       {[
@@ -81,21 +82,37 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
           <div className={"flex"} />
           <div className={"h-6 w-[66.56px]"} />
         </div>,
-        ...weekDatesAndNamesArray.map(weekDateAndNameRecord => (
-          <div
-            key={weekDateAndNameRecord.weekDay}
-            className={"flex flex-col w-full h-full"}
-          >
+        ...weekDatesAndNamesArray.map(weekDateAndNameRecord => {
+          const isSelected = Number(dayParam) === weekDateAndNameRecord.weekDay;
+
+          return (
             <div
               key={weekDateAndNameRecord.weekDay}
-              className={"flex flex-col w-full h-15    items-center"}
+              className={"flex flex-col w-full h-full"}
             >
-              <h2 className={"text-sm"}>{weekDateAndNameRecord.weekInitial}</h2>
-              <h2>{weekDateAndNameRecord.weekDay}</h2>
+              <div
+                key={weekDateAndNameRecord.weekDay}
+                className={"flex flex-col w-full h-15    items-center"}
+              >
+                <h2 className={"text-sm"}>
+                  {weekDateAndNameRecord.weekInitial}
+                </h2>
+                <h2
+                  className={`w-12 flex justify-center items-center ${
+                    isSelected
+                      ? "bg-gray-500 text-white font-bold rounded-full"
+                      : ""
+                  } `}
+                >
+                  {weekDateAndNameRecord.weekDay}
+                </h2>
+              </div>
+              <div
+                className={"h-6 w-4 border-l border-solid border-gray-600"}
+              />
             </div>
-            <div className={"h-6 w-4 border-l border-solid border-gray-600"} />
-          </div>
-        )),
+          );
+        }),
       ]}
     </div>
   );
