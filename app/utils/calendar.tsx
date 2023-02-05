@@ -4,6 +4,9 @@ import {
   getYear,
   getMonth,
   getDate,
+  getDay,
+  getWeekOfMonth,
+  addYears,
 } from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
@@ -19,40 +22,95 @@ export function getMonthNumber(date: Date) {
 }
 export const weekDaysInitialsArray = ["S", "M", "T", "W", "T", "F", "S"];
 
-export function getListOfSevenDayLists(date: Date) {
-  const numberOfDayInMonth = getDaysInMonth(date);
-  const numberOfWeeksInMonth = Math.ceil(numberOfDayInMonth / 7);
-  let index = 0;
-  const listOfSevenDayLists = [];
-  for (let weekNumber = 1; weekNumber <= numberOfWeeksInMonth; weekNumber++) {
+type DayRecord = { day: number; month: number; year: number };
+function loopThroughDaysInMonthAndGenerateGroupOfSevenDaysAndAddToArray(
+  date: Date,
+  numberOfDayInMonth: number,
+  listOfSevenDayLists: Array<Array<DayRecord>>,
+) {
+  for (let i = 1; i <= numberOfDayInMonth; i++) {
+    const weekOfMonth = getWeekOfMonth(
+      new Date(getYear(date), getMonth(date), i),
+    );
+    const existingArray = listOfSevenDayLists[weekOfMonth - 1];
     const groupOfSevenDays: Array<{
       day: number;
       month: number;
       year: number;
-    }> = [];
+    }> = existingArray || [];
 
-    for (let dayNumber = index + 1; dayNumber <= index + 7; dayNumber++) {
-      if (dayNumber <= numberOfDayInMonth) {
-        groupOfSevenDays.push({
-          day: dayNumber,
-          month: getMonthNumber(date),
-          year: getYear(date),
-        });
-      }
-    }
-    if (groupOfSevenDays.length < 7) {
-      const diff = 7 - groupOfSevenDays.length;
-      for (let k = 1; k <= diff; k++) {
-        groupOfSevenDays.push({
-          day: k,
-          month: getMonthNumber(addMonths(date, 1)),
-          year: getYear(date),
-        });
-      }
-    }
-    listOfSevenDayLists.push(groupOfSevenDays);
-    index = index + 7;
+    groupOfSevenDays[getDay(new Date(getYear(date), getMonth(date), i))] = {
+      day: i,
+      month: getMonthNumber(date),
+      year: getYear(date),
+    };
+
+    listOfSevenDayLists[weekOfMonth - 1] = groupOfSevenDays;
   }
+}
+
+function addDaysFromNextMonthToLastGroupDayArray(
+  lastWeekArray: Array<DayRecord>,
+  date: Date,
+  listOfSevenDayLists: Array<Array<DayRecord>>,
+) {
+  if (lastWeekArray.length < 7) {
+    const diff = 7 - lastWeekArray.length;
+    const month = getMonthNumber(date);
+
+    for (let k = 1; k <= diff; k++) {
+      lastWeekArray.push({
+        day: k,
+        month: month === 12 ? 1 : getMonthNumber(date) + 1,
+        year: month === 12 ? getYear(addYears(date, 1)) : getYear(date),
+      });
+    }
+  }
+  listOfSevenDayLists[listOfSevenDayLists.length - 1] = [...lastWeekArray];
+}
+
+function addDaysFromPreviousMonthToFirstGroupArray(
+  firstWeekArray: Array<DayRecord>,
+  date: Date,
+  listOfSevenDayLists: Array<Array<DayRecord>>,
+) {
+  const firstWeek = firstWeekArray.filter(item => item !== undefined);
+  const undefinedCount = 7 - firstWeek.length;
+
+  if (undefinedCount > 0) {
+    const previousMonth = getMonthNumber(addMonths(date, -1));
+    for (let k = 0; k < undefinedCount; k++) {
+      firstWeekArray[k] = {
+        day: getDaysInMonth(addMonths(date, -1)) - undefinedCount + k + 1,
+        month: previousMonth,
+        year:
+          previousMonth === 12 ? getYear(addYears(date, -1)) : getYear(date),
+      };
+    }
+    listOfSevenDayLists[0] = [...firstWeekArray];
+  }
+}
+export function getListOfSevenDayLists(date: Date) {
+  const numberOfDayInMonth = getDaysInMonth(date);
+  const listOfSevenDayLists: Array<Array<DayRecord>> = [];
+  loopThroughDaysInMonthAndGenerateGroupOfSevenDaysAndAddToArray(
+    date,
+    numberOfDayInMonth,
+    listOfSevenDayLists,
+  );
+  const lastWeekArray = listOfSevenDayLists[listOfSevenDayLists.length - 1];
+  addDaysFromNextMonthToLastGroupDayArray(
+    lastWeekArray,
+    date,
+    listOfSevenDayLists,
+  );
+
+  const firstWeekArray = listOfSevenDayLists[0];
+  addDaysFromPreviousMonthToFirstGroupArray(
+    firstWeekArray,
+    date,
+    listOfSevenDayLists,
+  );
   return listOfSevenDayLists;
 }
 export function nextYear(date: Date) {
@@ -77,7 +135,7 @@ export function getWeekNumberInMonth(date: Date) {
   return Math.ceil(day / 7);
 }
 export function getWeekDatesAndNames(date: Date) {
-  const week = getWeekNumberInMonth(date);
+  const week = getWeekOfMonth(date);
   const listOfSevenDayLists = getListOfSevenDayLists(date);
   const weekDates = listOfSevenDayLists[week - 1];
   const weekDays = [];

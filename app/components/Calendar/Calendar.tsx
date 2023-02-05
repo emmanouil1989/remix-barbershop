@@ -6,7 +6,6 @@ import {
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
-  nextYear,
   useCalendarContext,
   weekDaysInitialsArray,
 } from "~/utils/calendar";
@@ -22,7 +21,7 @@ export default function Calendar() {
   return (
     <div
       className={
-        "flex flex-col max-w-[300px] max-h-[270px] mt-16 p-4 border border-solid border-gray-600"
+        "flex flex-col max-w-[300px] max-h-[310px] mt-16 p-4 border border-solid border-gray-600"
       }
     >
       <div className={"flex flex-row items-center justify-between mx-4 pl-1"}>
@@ -86,25 +85,20 @@ export default function Calendar() {
                 const isDuplicated = dayRecord.month !== getMonthNumber(date);
 
                 const isSelected =
-                  dayParam === dayRecord.day &&
-                  getMonthNumber(date) === monthParam + 1 &&
+                  Number(dayParam) === dayRecord.day &&
+                  getMonthNumber(date) === Number(monthParam) &&
                   !isDuplicated;
 
-                const year =
-                  isDuplicated && dayRecord.month === 1
-                    ? nextYear(
-                        new Date(
-                          dayRecord.year,
-                          dayRecord.month - 1,
-                          dayRecord.day,
-                        ),
-                      )
-                    : dayRecord.year;
-
                 function onDateSelect() {
-                  setDate(new Date(year, dayRecord.month - 1, dayRecord.day));
+                  setDate(
+                    new Date(
+                      dayRecord.year,
+                      dayRecord.month - 1,
+                      dayRecord.day,
+                    ),
+                  );
                   navigate(
-                    `/store/bookings?year=${year}&month=${dayRecord.month}&day=${dayRecord.day}`,
+                    `/store/bookings?year=${dayRecord.year}&month=${dayRecord.month}&day=${dayRecord.day}`,
                   );
                 }
                 return (
@@ -131,13 +125,16 @@ export default function Calendar() {
 
 export function useInitialDateState() {
   const [params] = useSearchParams();
-  const yearParam = Number(params.get("year"));
-  const monthParam = Number(params.get("month")) - 1;
-  const dayParam = Number(params.get("day"));
-
+  const yearParam = params.get("year");
+  const monthParam = params.get("month");
+  const dayParam = params.get("day");
   let dateParam = undefined;
-  if (yearParam && monthParam && dayParam) {
-    dateParam = new Date(yearParam, monthParam, dayParam);
+  if (yearParam !== undefined && monthParam && dayParam) {
+    dateParam = new Date(
+      Number(yearParam),
+      Number(monthParam) - 1,
+      Number(dayParam),
+    );
   }
   const dateState = useState(dateParam || new Date());
   return { dateState, dayParam, monthParam, yearParam };

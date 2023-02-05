@@ -8,7 +8,7 @@ import React from "react";
 export default function Scheduler() {
   const { dayParam, monthParam, yearParam } = useCalendarContext();
   const date = dayParam
-    ? new Date(yearParam, monthParam, dayParam)
+    ? new Date(Number(yearParam), Number(monthParam) - 1, Number(dayParam))
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
   return (
