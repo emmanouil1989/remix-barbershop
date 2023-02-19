@@ -191,6 +191,17 @@ export function CalendarContextProvider({
   );
 }
 
+// get users GMT offset
+export function getGMTOffset() {
+  const offset = new Date().getTimezoneOffset();
+  const hours = Math.abs(Math.floor(offset / 60));
+  const minutes = Math.abs(offset % 60);
+  const sign = offset > 0 ? "-" : "+";
+  return `${sign}${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}`;
+}
+
 export const useCalendarContext = () => {
   const context = useContext(CalendarContext);
   if (context === undefined) {

@@ -4,7 +4,7 @@ import type { DropdownOption } from "~/components/Dropdown/Dropdown";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
-import { CalendarContextProvider } from "~/utils/calendar";
+import { CalendarContextProvider } from "~/utils/calendarUtils";
 import Scheduler from "~/components/ Scheduler/Scheduler";
 
 type TimeViewsType = "Month" | "Week";

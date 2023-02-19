@@ -1,8 +1,9 @@
 import {
+  getGMTOffset,
   getHoursOfTheDay,
   getWeekDatesAndNames,
   useCalendarContext,
-} from "~/utils/calendar";
+} from "~/utils/calendarUtils";
 import React from "react";
 
 export default function Scheduler() {
@@ -78,9 +79,17 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
   return (
     <div className={"flex"}>
       {[
-        <div key={"extra"} className={"flex flex-col"}>
-          <div className={"flex"} />
-          <div className={"h-6 w-[66.56px]"} />
+        <div
+          key={"times-header"}
+          className={"grid grid-flow-row -mt-[0.7rem] items-end  w-96"}
+        >
+          <div className={"flex flex-col items-center gap-0.5  w-full h-16 "}>
+            <span className={"text-sm"}>GMT</span>
+            <span className={"text-sm"}>{getGMTOffset()}</span>
+          </div>
+        </div>,
+        <div key={"extra-column-header"} className={"grid grid-flow-row"}>
+          <div className={`flex flex-col w-4 h-16`} />
         </div>,
         ...weekDatesAndNamesArray.map(weekDateAndNameRecord => {
           const isSelected = Number(dayParam) === weekDateAndNameRecord.weekDay;

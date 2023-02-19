@@ -8,7 +8,7 @@ import {
   getPreviousMonth,
   useCalendarContext,
   weekDaysInitialsArray,
-} from "~/utils/calendar";
+} from "~/utils/calendarUtils";
 import { useNavigate, useSearchParams } from "@remix-run/react";
 
 export default function Calendar() {
