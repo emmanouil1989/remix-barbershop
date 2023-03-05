@@ -2,6 +2,7 @@ import type { Prisma, StoreServices } from "@prisma/client";
 import { PrismaClient, Role } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import bycript from "bcrypt";
+import { addHours, addMinutes, startOfWeek } from "date-fns";
 
 const prisma = new PrismaClient();
 
@@ -47,6 +48,12 @@ function bookingsFactory(
   storeId: string,
   service: Prisma.ServiceCreateInput,
 ): Array<Prisma.BookingCreateWithoutUserInput> {
+  const random = Math.floor(Math.random() * 72) + 1;
+  const firstDayOfWeek = startOfWeek(new Date());
+  const start = addHours(firstDayOfWeek, random);
+
+  const end = addMinutes(start, 30);
+
   return [
     {
       store: {
@@ -59,8 +66,8 @@ function bookingsFactory(
           ...service,
         },
       },
-      start: faker.date.future(),
-      end: faker.date.future(),
+      start,
+      end,
     },
   ];
 }

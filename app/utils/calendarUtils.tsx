@@ -7,6 +7,8 @@ import {
   getDay,
   getWeekOfMonth,
   addYears,
+  startOfWeek,
+  endOfWeek,
 } from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
@@ -200,6 +202,12 @@ export function getGMTOffset() {
   return `${sign}${hours.toString().padStart(2, "0")}:${minutes
     .toString()
     .padStart(2, "0")}`;
+}
+
+export function getFirstAndDateOfWeekForAGivenDate(date: Date) {
+  const firstDayOfWeek = startOfWeek(date);
+  const lastDayOfWeek = endOfWeek(date);
+  return { firstDayOfWeek, lastDayOfWeek };
 }
 
 export const useCalendarContext = () => {
