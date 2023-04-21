@@ -5,8 +5,15 @@ import {
   useCalendarContext,
 } from "~/utils/calendarUtils";
 import React from "react";
+import type { Booking } from "@prisma/client";
+import type { SerializeFrom } from "@remix-run/node";
 
-export default function Scheduler() {
+export type HourBooking = Record<string, Booking>;
+type BookingsWithDaysAndHours = SerializeFrom<Record<string, HourBooking>>;
+type ScheduleProps = {
+  bookingsWithDaysAndHours: BookingsWithDaysAndHours;
+};
+export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
   const { dayParam, monthParam, yearParam } = useCalendarContext();
   const date = dayParam
     ? new Date(Number(yearParam), Number(monthParam) - 1, Number(dayParam))
@@ -15,13 +22,21 @@ export default function Scheduler() {
   return (
     <div className={"flex flex-col w-full h-full"}>
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
-      <ScheduleBody weekDatesAndNamesArray={weekDatesAndNamesArray} />
+      <ScheduleBody
+        weekDatesAndNamesArray={weekDatesAndNamesArray}
+        bookingsWithDaysAndHours={bookingsWithDaysAndHours}
+      />
     </div>
   );
 }
 
-type ScheduleBodyProps = ScheduleHeaderProps;
-function ScheduleBody({ weekDatesAndNamesArray }: ScheduleBodyProps) {
+type ScheduleBodyProps = ScheduleHeaderProps & {
+  bookingsWithDaysAndHours: BookingsWithDaysAndHours;
+};
+function ScheduleBody({
+  weekDatesAndNamesArray,
+  bookingsWithDaysAndHours,
+}: ScheduleBodyProps) {
   const dayHours = getHoursOfTheDay();
   return (
     <div
@@ -53,16 +68,24 @@ function ScheduleBody({ weekDatesAndNamesArray }: ScheduleBodyProps) {
         ...weekDatesAndNamesArray.map(({ weekDay }, index) => (
           <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
             {[
-              ...dayHours.map(hour => (
-                <div
-                  key={hour}
-                  className={`flex flex-col ${
-                    index === weekDatesAndNamesArray.length - 1
-                      ? "border-r border-solid border-gray-600"
-                      : "border-r-0"
-                  } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
-                />
-              )),
+              ...dayHours.map(
+                hour => (
+                  console.log(
+                    "isBooked",
+                    bookingsWithDaysAndHours[weekDay]?.[hour] !== undefined,
+                  ),
+                  (
+                    <div
+                      key={hour}
+                      className={`flex flex-col ${
+                        index === weekDatesAndNamesArray.length - 1
+                          ? "border-r border-solid border-gray-600"
+                          : "border-r-0"
+                      } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
+                    />
+                  )
+                ),
+              ),
             ]}
           </div>
         )),

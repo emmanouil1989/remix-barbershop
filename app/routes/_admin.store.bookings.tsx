@@ -7,13 +7,16 @@ import Calendar from "~/components/Calendar/Calendar";
 import {
   CalendarContextProvider,
   getFirstAndDateOfWeekForAGivenDate,
+  getHourFromDate,
 } from "~/utils/calendarUtils";
+import type { HourBooking } from "~/components/ Scheduler/Scheduler";
 import Scheduler from "~/components/ Scheduler/Scheduler";
 import { prisma } from "~/db.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Booking } from "@prisma/client";
 import { useLoaderData } from "@remix-run/react";
+import { getDate } from "date-fns";
 
 type TimeViewsType = "Month" | "Week";
 
@@ -33,7 +36,6 @@ export async function loader({ params }: LoaderArgs) {
   const { firstDayOfWeek, lastDayOfWeek } =
     getFirstAndDateOfWeekForAGivenDate(date);
 
-  console.log({ firstDayOfWeek, lastDayOfWeek });
   let bookings: Array<Booking> = [];
   const store = await prisma.store.findFirst();
   if (store) {
@@ -50,13 +52,35 @@ export async function loader({ params }: LoaderArgs) {
     });
   }
 
-  return json({ bookings });
+  const bookingsWithDaysAndHours = bookings.reduce((bookingRecord, booking) => {
+    const day = getDate(booking.start);
+    const hour = getHourFromDate(booking.start);
+    if (bookingRecord[day]) {
+      return {
+        ...bookingRecord,
+        [day]: {
+          ...bookingRecord[day],
+          [hour]: booking,
+        },
+      };
+    } else {
+      return {
+        ...bookingRecord,
+        [day]: {
+          [hour]: booking,
+        },
+      };
+    }
+  }, {} as Record<string, HourBooking>);
+
+  return json({ bookingsWithDaysAndHours });
 }
 
 export default function AdminStoreBookings() {
   const timeViewState = useState<TimeViewsType>("Month");
-  const loaderData = useLoaderData<typeof loader>();
-  console.log({ loaderData });
+  const { bookingsWithDaysAndHours } = useLoaderData<typeof loader>();
+  console.log(bookingsWithDaysAndHours);
+
   return (
     <div className={"flex h-full w-full flex-col py-4 gap-4"}>
       <AppointmentScheduleHeader timeViewState={timeViewState} />
@@ -64,7 +88,7 @@ export default function AdminStoreBookings() {
       <CalendarContextProvider>
         <div className={"grid grid-cols-[max-content_1fr] gap-4"}>
           <Calendar />
-          <Scheduler />
+          <Scheduler bookingsWithDaysAndHours={bookingsWithDaysAndHours} />
         </div>
       </CalendarContextProvider>
     </div>

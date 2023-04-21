@@ -9,6 +9,7 @@ import {
   addYears,
   startOfWeek,
   endOfWeek,
+  getHours,
 } from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
@@ -153,6 +154,22 @@ export function getWeekDatesAndNames(date: Date) {
     weekDays.push({ weekDay, weekInitial });
   }
   return weekDays;
+}
+
+export function getHourFromDate(date: Date) {
+  return convertHourToAmPm(getHours(date));
+}
+
+function convertHourToAmPm(hour: number) {
+  if (hour === 0) {
+    return "12 AM";
+  } else if (hour < 12) {
+    return `${hour} AM`;
+  } else if (hour === 12) {
+    return `${hour} PM`;
+  } else {
+    return `${hour - 12} PM`;
+  }
 }
 
 //function to return  an array with day numbers concatenated with am and pm string
