@@ -10,6 +10,7 @@ import {
   startOfWeek,
   endOfWeek,
   getHours,
+  getMinutes,
 } from "date-fns";
 import type { ReactNode } from "react";
 import { useContext } from "react";
@@ -157,18 +158,31 @@ export function getWeekDatesAndNames(date: Date) {
 }
 
 export function getHourFromDate(date: Date) {
-  return convertHourToAmPm(getHours(date));
+  const hour = getHours(date);
+  return convertHourToAmPm(hour, isHalfHour(date));
 }
 
-function convertHourToAmPm(hour: number) {
+//check if date is half hour
+export function isHalfHour(date: Date) {
+  const minutes = getMinutes(date);
+  return minutes === 30;
+}
+
+export function addHalfHourToAmPmDay(aMpMString: string) {
+  const split = aMpMString.split(" ");
+  const hour = split[0];
+  const amPm = split[1];
+  return `${hour}:30 ${amPm}`;
+}
+function convertHourToAmPm(hour: number, isHalfHour: boolean) {
   if (hour === 0) {
-    return "12 AM";
+    return `12${isHalfHour ? ":30" : ""} AM`;
   } else if (hour < 12) {
-    return `${hour} AM`;
+    return `${hour}${isHalfHour ? ":30" : ""} AM`;
   } else if (hour === 12) {
-    return `${hour} PM`;
+    return `12${isHalfHour ? ":30" : ""} PM`;
   } else {
-    return `${hour - 12} PM`;
+    return `${hour - 12}${isHalfHour ? ":30" : ""} PM`;
   }
 }
 

@@ -50,8 +50,11 @@ function bookingsFactory(
 ): Array<Prisma.BookingCreateWithoutUserInput> {
   const random = Math.floor(Math.random() * 72) + 1;
   const firstDayOfWeek = startOfWeek(new Date());
-  const start = addHours(firstDayOfWeek, random);
 
+  const start = addHours(firstDayOfWeek, random);
+  if (Math.random() > 0.5) {
+    start.setMinutes(start.getMinutes() + 30);
+  }
   const end = addMinutes(start, 30);
 
   return [

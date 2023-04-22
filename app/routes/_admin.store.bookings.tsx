@@ -79,7 +79,6 @@ export async function loader({ params }: LoaderArgs) {
 export default function AdminStoreBookings() {
   const timeViewState = useState<TimeViewsType>("Month");
   const { bookingsWithDaysAndHours } = useLoaderData<typeof loader>();
-  console.log(bookingsWithDaysAndHours);
 
   return (
     <div className={"flex h-full w-full flex-col py-4 gap-4"}>

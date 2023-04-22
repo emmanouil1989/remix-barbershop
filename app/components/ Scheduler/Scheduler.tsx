@@ -1,4 +1,5 @@
 import {
+  addHalfHourToAmPmDay,
   getGMTOffset,
   getHoursOfTheDay,
   getWeekDatesAndNames,
@@ -68,24 +69,45 @@ function ScheduleBody({
         ...weekDatesAndNamesArray.map(({ weekDay }, index) => (
           <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
             {[
-              ...dayHours.map(
-                hour => (
-                  console.log(
-                    "isBooked",
-                    bookingsWithDaysAndHours[weekDay]?.[hour] !== undefined,
-                  ),
-                  (
+              ...dayHours.map(hour => {
+                const booking = bookingsWithDaysAndHours?.[weekDay]?.[hour];
+                const halfHourBooking =
+                  bookingsWithDaysAndHours?.[weekDay]?.[
+                    addHalfHourToAmPmDay(hour)
+                  ];
+                return (
+                  <div
+                    key={hour}
+                    className={`flex flex-col ${
+                      index === weekDatesAndNamesArray.length - 1
+                        ? "border-r border-solid border-gray-600"
+                        : "border-r-0"
+                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 max-w-[7rem] w-full h-16`}
+                  >
                     <div
-                      key={hour}
-                      className={`flex flex-col ${
-                        index === weekDatesAndNamesArray.length - 1
-                          ? "border-r border-solid border-gray-600"
-                          : "border-r-0"
-                      } border-solid [&:not(:last-child)]:border-b-0   border border-gray-600 w-full h-16`}
-                    />
-                  )
-                ),
-              ),
+                      className={`flex p-1 text-white text-sm ${
+                        booking && booking.start
+                          ? "bg-gray-600 cursor-pointer"
+                          : ""
+                      } rounded w-11/12 h-full`}
+                    >
+                      <span className={"truncate"}>{booking?.start}</span>
+                    </div>
+
+                    <div
+                      className={`flex p-1 text-white text-sm ${
+                        halfHourBooking && halfHourBooking.start
+                          ? "bg-gray-600 cursor-pointer"
+                          : ""
+                      } rounded w-11/12 h-full`}
+                    >
+                      <span className={"truncate w-full h-full"}>
+                        {halfHourBooking?.start}
+                      </span>
+                    </div>
+                  </div>
+                );
+              }),
             ]}
           </div>
         )),
