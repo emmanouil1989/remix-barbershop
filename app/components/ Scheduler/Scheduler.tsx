@@ -82,24 +82,24 @@ function ScheduleBody({
                       index === weekDatesAndNamesArray.length - 1
                         ? "border-r border-solid border-gray-600"
                         : "border-r-0"
-                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 max-w-[7rem] w-full h-16`}
+                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 max-w-[7rem] gap-1 w-full h-16`}
                   >
                     <div
-                      className={`flex p-1 text-white text-sm ${
+                      className={`flex p-1 text-white mt-1 text-sm ${
                         booking && booking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      } rounded w-11/12 h-full`}
+                      }  w-11/12 h-full`}
                     >
                       <span className={"truncate"}>{booking?.start}</span>
                     </div>
 
                     <div
-                      className={`flex p-1 text-white text-sm ${
+                      className={`flex p-1 mb-1 text-white text-sm ${
                         halfHourBooking && halfHourBooking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      } rounded w-11/12 h-full`}
+                      } w-11/12 h-full`}
                     >
                       <span className={"truncate w-full h-full"}>
                         {halfHourBooking?.start}
@@ -126,7 +126,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
       {[
         <div
           key={"times-header"}
-          className={"grid grid-flow-row -mt-[0.7rem] items-end  w-96"}
+          className={"grid grid-flow-row -mt-[0.7rem]  w-96"}
         >
           <div className={"flex flex-col items-center gap-0.5  w-full h-16 "}>
             <span className={"text-sm"}>GMT</span>
