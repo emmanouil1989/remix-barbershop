@@ -6,10 +6,20 @@ import {
   useCalendarContext,
 } from "~/utils/calendarUtils";
 import React from "react";
-import type { Booking } from "@prisma/client";
 import type { SerializeFrom } from "@remix-run/node";
+import type { Prisma } from "@prisma/client";
 
-export type HourBooking = Record<string, Booking>;
+type BookingServices = Prisma.BookingGetPayload<{
+  include: {
+    user: true;
+    services: {
+      include: {
+        storeService: true;
+      };
+    };
+  };
+}>;
+export type HourBooking = Record<string, BookingServices>;
 type BookingsWithDaysAndHours = SerializeFrom<Record<string, HourBooking>>;
 type ScheduleProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
@@ -82,28 +92,34 @@ function ScheduleBody({
                       index === weekDatesAndNamesArray.length - 1
                         ? "border-r border-solid border-gray-600"
                         : "border-r-0"
-                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 max-w-[7rem] gap-1 w-full h-16`}
+                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 pl-1 max-w-[7rem] gap-1 w-full h-16`}
                   >
                     <div
-                      className={`flex p-1 text-white mt-1 text-sm ${
+                      className={`flex py-0.5 px-1 text-white mt-1 text-sm ${
                         booking && booking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
                       }  w-11/12 h-full`}
                     >
-                      <span className={"truncate"}>{booking?.start}</span>
+                      {booking?.user.firstName && (
+                        <span className={"truncate"}>
+                          {`${booking?.user?.firstName} - ${booking?.services[0].storeService.name}`}
+                        </span>
+                      )}
                     </div>
 
                     <div
-                      className={`flex p-1 mb-1 text-white text-sm ${
+                      className={`flex py-0.5 px-1 mb-1 text-white text-sm ${
                         halfHourBooking && halfHourBooking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
                       } w-11/12 h-full`}
                     >
-                      <span className={"truncate w-full h-full"}>
-                        {halfHourBooking?.start}
-                      </span>
+                      {halfHourBooking?.user.firstName && (
+                        <span className={"truncate w-full h-full"}>
+                          {`${halfHourBooking?.user?.firstName} - ${halfHourBooking?.services[0].storeService.name}`}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
