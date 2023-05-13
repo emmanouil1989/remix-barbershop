@@ -60,26 +60,29 @@ export async function loader({ params }: LoaderArgs) {
     });
   }
 
-  const bookingsWithDaysAndHours = bookings.reduce((bookingRecord, booking) => {
-    const day = getDate(booking.start);
-    const hour = getHourFromDate(booking.start);
-    if (bookingRecord[day]) {
-      return {
-        ...bookingRecord,
-        [day]: {
-          ...bookingRecord[day],
-          [hour]: booking,
-        },
-      };
-    } else {
-      return {
-        ...bookingRecord,
-        [day]: {
-          [hour]: booking,
-        },
-      };
-    }
-  }, {} as Record<string, HourBooking>);
+  const bookingsWithDaysAndHours = bookings.reduce<Record<string, HourBooking>>(
+    (bookingRecord, booking) => {
+      const day = getDate(booking.start);
+      const hour = getHourFromDate(booking.start);
+      if (bookingRecord[day]) {
+        return {
+          ...bookingRecord,
+          [day]: {
+            ...bookingRecord[day],
+            [hour]: booking,
+          },
+        };
+      } else {
+        return {
+          ...bookingRecord,
+          [day]: {
+            [hour]: booking,
+          },
+        };
+      }
+    },
+    {},
+  );
 
   return json({ bookingsWithDaysAndHours });
 }
