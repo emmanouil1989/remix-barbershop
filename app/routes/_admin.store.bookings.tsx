@@ -20,19 +20,17 @@ import { getDate } from "date-fns";
 
 type TimeViewsType = "Month" | "Week";
 
-export async function loader({ params }: LoaderArgs) {
-  const year = params.year;
-  const month = params.month;
-  const day = params.day;
+export async function loader({ request }: LoaderArgs) {
+  const url = new URL(request.url);
+  const year = url.searchParams.get("year");
+  const month = url.searchParams.get("month");
+  const day = url.searchParams.get("day");
   let date = new Date();
-  if (
-    typeof year === "string" &&
-    typeof month === "string" &&
-    typeof day === "string"
-  ) {
+  if (typeof year && typeof month && typeof day) {
     const calculatedMonth = Number(month) - 1;
-    date = new Date(Number(year), calculatedMonth, Number(day));
+    date = new Date(Number(year), calculatedMonth, Number(day) + 1);
   }
+
   const { firstDayOfWeek, lastDayOfWeek } =
     getFirstAndDateOfWeekForAGivenDate(date);
 

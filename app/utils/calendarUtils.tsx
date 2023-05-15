@@ -7,8 +7,6 @@ import {
   getDay,
   getWeekOfMonth,
   addYears,
-  startOfWeek,
-  endOfWeek,
   getHours,
   getMinutes,
 } from "date-fns";
@@ -236,9 +234,25 @@ export function getGMTOffset() {
 }
 
 export function getFirstAndDateOfWeekForAGivenDate(date: Date) {
-  const firstDayOfWeek = startOfWeek(date);
-  const lastDayOfWeek = endOfWeek(date);
-  return { firstDayOfWeek, lastDayOfWeek };
+  const weekDatesAndNamesArray = getWeekDatesAndNames(date);
+  const firstDayOfWeek = weekDatesAndNamesArray[0].weekDay;
+
+  const lastDayOfWeek = weekDatesAndNamesArray[6].weekDay;
+
+  const firstDayOfWeekDate = new Date(
+    getYear(date),
+    getMonth(date),
+    firstDayOfWeek + 1,
+  );
+  const lastDayOfWeekDate = new Date(
+    getYear(date),
+    getMonth(date),
+    lastDayOfWeek + 1,
+  );
+  return {
+    firstDayOfWeek: firstDayOfWeekDate,
+    lastDayOfWeek: lastDayOfWeekDate,
+  };
 }
 
 export const useCalendarContext = () => {
