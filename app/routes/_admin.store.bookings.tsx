@@ -26,14 +26,13 @@ export async function loader({ request }: LoaderArgs) {
   const month = url.searchParams.get("month");
   const day = url.searchParams.get("day");
   let date = new Date();
-  if (typeof year && typeof month && typeof day) {
+  if (year && month && day) {
     const calculatedMonth = Number(month) - 1;
     date = new Date(Number(year), calculatedMonth, Number(day) + 1);
   }
 
   const { firstDayOfWeek, lastDayOfWeek } =
     getFirstAndDateOfWeekForAGivenDate(date);
-
   let bookings: Array<Booking> = [];
   const store = await prisma.store.findFirst();
   if (store) {
