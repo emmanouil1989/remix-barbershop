@@ -31,7 +31,8 @@ export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
   return (
-    <div className={"flex flex-col w-full h-full"}>
+    // div max height base on screen size
+    <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
       <ScheduleBody
         weekDatesAndNamesArray={weekDatesAndNamesArray}
@@ -52,11 +53,14 @@ function ScheduleBody({
   return (
     <div
       className={
-        "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-20rem)]"
+        "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto"
       }
     >
       {[
-        <div key={"times"} className={"grid grid-flow-row -mt-[0.7rem]  w-96"}>
+        <div
+          key={"times"}
+          className={"grid grid-flow-row -mt-[0.7rem] grid-cols-[3rem]"}
+        >
           {dayHours.map(hour => {
             return (
               <div
@@ -92,14 +96,14 @@ function ScheduleBody({
                       index === weekDatesAndNamesArray.length - 1
                         ? "border-r border-solid border-gray-600"
                         : "border-r-0"
-                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 pl-1 max-w-[7rem] gap-1 w-full h-16`}
+                    } border-solid [&:not(:last-child)]:border-b-0  border border-gray-600 pl-1 min-w-[6rem] gap-1 w-full h-16`}
                   >
                     <div
                       className={`flex py-0.5 px-1 text-white mt-1 text-sm ${
                         booking && booking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      }  w-11/12 h-full`}
+                      }  w-full max-w-[6rem]  h-full`}
                     >
                       {booking?.user.firstName && (
                         <span className={"truncate"}>
@@ -113,7 +117,7 @@ function ScheduleBody({
                         halfHourBooking && halfHourBooking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      } w-11/12 h-full`}
+                      } w-full max-w-[6rem]  h-full`}
                     >
                       {halfHourBooking?.user.firstName && (
                         <span className={"truncate w-full h-full"}>
@@ -142,7 +146,9 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
       {[
         <div
           key={"times-header"}
-          className={"grid grid-flow-row -mt-[0.7rem]  w-96"}
+          className={
+            "grid grid-flow-row -mt-[0.7rem] items-end  grid-cols-[3rem]"
+          }
         >
           <div className={"flex flex-col items-center gap-0.5  w-full h-16 "}>
             <span className={"text-sm"}>GMT</span>
