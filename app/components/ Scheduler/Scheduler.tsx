@@ -2,6 +2,8 @@ import {
   addHalfHourToAmPmDay,
   getGMTOffset,
   getHoursOfTheDay,
+  getListOfSevenDayLists,
+  getMonthNumber,
   getWeekDatesAndNames,
   useCalendarContext,
 } from "~/utils/calendarUtils";
@@ -25,11 +27,68 @@ type ScheduleProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
 };
 export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
-  const { dayParam, monthParam, yearParam } = useCalendarContext();
+  const { dayParam, monthParam, yearParam, timeView } = useCalendarContext();
   const date = dayParam
     ? new Date(Number(yearParam), Number(monthParam) - 1, Number(dayParam))
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
+  if (timeView === "Week") {
+    return (
+      <WeekView
+        bookingsWithDaysAndHours={bookingsWithDaysAndHours}
+        weekDatesAndNamesArray={weekDatesAndNamesArray}
+      />
+    );
+  }
+
+  return <MonthView />;
+}
+
+function MonthView() {
+  const { dateState } = useCalendarContext();
+  const [date] = dateState;
+  const arrayOfMonthDays = getListOfSevenDayLists(date);
+
+  return (
+    <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
+      <div>
+        {arrayOfMonthDays.map((week, index) => (
+          <div
+            key={`day-${index}`}
+            className={
+              "grid grid-cols-7 first:border-t  border-gray-600 border-l "
+            }
+          >
+            {week.map(dayRecord => {
+              const isDuplicated = dayRecord.month !== getMonthNumber(date);
+              return (
+                <div
+                  className={
+                    "w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col justify-between gap-1 "
+                  }
+                  key={dayRecord.day}
+                >
+                  <div
+                    className={`flex justify-center w-full ${
+                      isDuplicated ? "text-gray-400" : ""
+                    }`}
+                  >
+                    {dayRecord.day}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WeekView({
+  bookingsWithDaysAndHours,
+  weekDatesAndNamesArray,
+}: ScheduleBodyProps) {
   return (
     <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
@@ -40,7 +99,6 @@ export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
     </div>
   );
 }
-
 type ScheduleBodyProps = ScheduleHeaderProps & {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
 };

@@ -10,9 +10,10 @@ import {
   weekDaysInitialsArray,
 } from "~/utils/calendarUtils";
 import { useNavigate, useSearchParams } from "@remix-run/react";
+import { isTypeViewType } from "~/routes/_admin.store.bookings";
 
 export default function Calendar() {
-  const { dateState, dayParam, monthParam } = useCalendarContext();
+  const { dateState, dayParam, monthParam, timeView } = useCalendarContext();
   const [date, setDate] = dateState;
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
@@ -98,7 +99,7 @@ export default function Calendar() {
                     ),
                   );
                   navigate(
-                    `/store/bookings?year=${dayRecord.year}&month=${dayRecord.month}&day=${dayRecord.day}`,
+                    `/store/bookings?year=${dayRecord.year}&month=${dayRecord.month}&day=${dayRecord.day}&tableView=${timeView}`,
                   );
                 }
                 return (
@@ -128,6 +129,8 @@ export function useInitialDateState() {
   const yearParam = params.get("year");
   const monthParam = params.get("month");
   const dayParam = params.get("day");
+  const timeViewParam = params.get("tableView");
+  const timeView = isTypeViewType(timeViewParam) ? timeViewParam : "Week";
   let dateParam = undefined;
   if (yearParam !== undefined && monthParam && dayParam) {
     dateParam = new Date(
@@ -137,5 +140,5 @@ export function useInitialDateState() {
     );
   }
   const dateState = useState(dateParam || new Date());
-  return { dateState, dayParam, monthParam, yearParam };
+  return { dateState, dayParam, monthParam, yearParam, timeView };
 }
