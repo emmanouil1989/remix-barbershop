@@ -31,7 +31,6 @@ export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
     : new Date();
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
   return (
-    // div max height base on screen size
     <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
       <ScheduleBody
