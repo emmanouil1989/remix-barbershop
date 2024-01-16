@@ -91,11 +91,11 @@ export default function AdminStoreBookings() {
   const { bookingsWithDaysAndHours } = useLoaderData<typeof loader>();
 
   return (
-    <div className={"flex h-full w-full flex-col py-4 gap-4"}>
+    <div className="flex h-full w-full flex-col py-4 gap-4">
       <CalendarContextProvider>
         <AppointmentScheduleHeader />
 
-        <div className={"grid grid-cols-[max-content_1fr] gap-4"}>
+        <div className="grid grid-cols-[max-content_1fr] gap-4">
           <Calendar />
           <Scheduler bookingsWithDaysAndHours={bookingsWithDaysAndHours} />
         </div>
@@ -116,7 +116,7 @@ function AppointmentScheduleHeader() {
   const navigate = useNavigate();
   const { timeView } = useCalendarContext();
   return (
-    <div className={"flex flex-row items-center justify-end gap-4 pb-4"}>
+    <div className="flex flex-row items-center justify-end gap-4 pb-4">
       <Dropdown
         selectedValue={timeView}
         onChange={(value: string) => {

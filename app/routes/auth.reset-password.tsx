@@ -94,48 +94,36 @@ export default function ResetPassword() {
     ? loaderData.email
     : undefined;
   return (
-    <section
-      className={
-        "flex p-8 sm:p-0 sm:items-center justify-center h-full flex-col"
-      }
-    >
+    <section className="flex p-8 sm:p-0 sm:items-center justify-center h-full flex-col">
       <h1>Password Reset Page</h1>
       <ValidatedForm
         validator={validator}
-        method={"post"}
-        className={
-          "flex flex-col items-start justify-between w-[300px] sm:w-[400px]"
-        }
+        method="post"
+        className="flex flex-col items-start justify-between w-[300px] sm:w-[400px]"
       >
         <input type="hidden" name="email" value={hiddenEmailValue} />
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"password"} label={"New Password:"} type={"password"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="password" label="New Password:" type="password" />
         </div>
 
-        <div className={"flex flex-col w-full justify-between py-4"}>
+        <div className="flex flex-col w-full justify-between py-4">
           <Input
-            name={"confirmPassword"}
-            label={"Confirm Password:"}
-            type={"password"}
+            name="confirmPassword"
+            label="Confirm Password:"
+            type="password"
           />
         </div>
 
-        <div
-          className={
-            "flex  flex-col sm:flex-row sm:gap-0 gap-4 justify-between w-full items-center"
-          }
-        >
+        <div className="flex  flex-col sm:flex-row sm:gap-0 gap-4 justify-between w-full items-center">
           <Link
-            className={
-              " bg-gray-500 hover:bg-gray-700 flex justify-center text-white font-bold py-2 px-4 rounded"
-            }
-            to={"/"}
+            className=" bg-gray-500 hover:bg-gray-700 flex justify-center text-white font-bold py-2 px-4 rounded"
+            to="/"
           >
             Back to Home
           </Link>
           <SubmitButton
-            submitText={"Change Password"}
-            submittingText={"processing.."}
+            submitText="Change Password"
+            submittingText="processing.."
           />
         </div>
       </ValidatedForm>

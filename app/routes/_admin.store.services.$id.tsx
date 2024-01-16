@@ -72,45 +72,38 @@ export default function ViewServicePage() {
   const isUpdating = transition.submission?.formData.get("intent") === "update";
   const isDeleting = transition.submission?.formData.get("intent") === "delete";
   return (
-    <section
-      className={"flex flex-col w-full h-full pt-4 items-center pt-4 pl-8"}
-    >
+    <section className="flex flex-col w-full h-full pt-4 items-center pt-4 pl-8">
       <h1>{service.name}</h1>
       <ValidatedForm
         key={service.id}
         validator={Validator}
-        method={"post"}
-        className={"flex flex-col gap-4 w-full h-full"}
+        method="post"
+        className="flex flex-col gap-4 w-full h-full"
         defaultValues={{
           name: service.name,
           price: service.price.toString(),
           enabled: service.enabled.toString(),
         }}
       >
-        <div className={"flex flex-col "}>
-          <Input name={"name"} label={"Service Name:"} type={"text"} />
+        <div className="flex flex-col ">
+          <Input name="name" label="Service Name:" type="text" />
         </div>
-        <div className={"flex flex-col "}>
-          <Input name={"price"} label={"Price:"} type={"number"} step="any" />
+        <div className="flex flex-col ">
+          <Input name="price" label="Price:" type="number" step="any" />
         </div>
-        <div key={service.id} className={"flex  gap-4"}>
-          <label htmlFor={"enabled"}>Enabled:</label>
-          <Toggle name={"enabled"} initialValue={service.enabled} />
+        <div key={service.id} className="flex  gap-4">
+          <label htmlFor="enabled">Enabled:</label>
+          <Toggle name="enabled" initialValue={service.enabled} />
         </div>
-        <div className={"flex flex-row gap-4"}>
-          <Button
-            type={"submit"}
-            className={"button"}
-            name={"intent"}
-            value={"update"}
-          >
+        <div className="flex flex-row gap-4">
+          <Button type="submit" className="button" name="intent" value="update">
             {isUpdating ? "Updating your service..." : "Update Service"}
           </Button>
           <Button
-            type={"submit"}
-            name={"intent"}
-            value={"delete"}
-            className={"bg-red-600 hover:bg-red-700"}
+            type="submit"
+            name="intent"
+            value="delete"
+            className="bg-red-600 hover:bg-red-700"
           >
             {isDeleting ? "Deleting service..." : "Delete Service"}
           </Button>

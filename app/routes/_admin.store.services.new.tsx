@@ -43,22 +43,22 @@ const validator = withZod(
 );
 export default function CreateService() {
   return (
-    <section className={"flex h-full w-full pt-4 pl-8 "}>
+    <section className="flex h-full w-full pt-4 pl-8 ">
       <ValidatedForm
         validator={validator}
-        method={"post"}
-        className={"flex flex-col gap-4 w-full h-full"}
+        method="post"
+        className="flex flex-col gap-4 w-full h-full"
       >
-        <div className={"flex flex-col "}>
-          <Input name={"name"} label={"Service Name:"} type={"text"} />
+        <div className="flex flex-col ">
+          <Input name="name" label="Service Name:" type="text" />
         </div>
-        <div className={"flex flex-col "}>
-          <Input name={"price"} label={"Price:"} type={"number"} step="any" />
+        <div className="flex flex-col ">
+          <Input name="price" label="Price:" type="number" step="any" />
         </div>
         <div>
           <SubmitButton
-            submittingText={"Creating Service..."}
-            submitText={"Create Service"}
+            submittingText="Creating Service..."
+            submitText="Create Service"
           />
         </div>
       </ValidatedForm>

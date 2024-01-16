@@ -121,50 +121,43 @@ export default function Register() {
   useSendNotification("Success", notificationMessage);
 
   return (
-    <section className={"flex items-center justify-center h-full flex-col"}>
+    <section className="flex items-center justify-center h-full flex-col">
       <h1>Register</h1>
       <ValidatedForm
         validator={validator}
-        method={"post"}
-        className={
-          "flex flex-col items-start justify-between w-[300px] sm:w-[400px]"
-        }
+        method="post"
+        className="flex flex-col items-start justify-between w-[300px] sm:w-[400px]"
       >
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"firstName"} label={"First Name"} type={"text"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="firstName" label="First Name" type="text" />
         </div>
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"lastName"} label={"Last Name:"} type={"text"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="lastName" label="Last Name:" type="text" />
         </div>
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"email"} label={"Email:"} type={"email"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="email" label="Email:" type="email" />
         </div>
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"password"} label={"Password:"} type={"password"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="password" label="Password:" type="password" />
         </div>
-        <div className={"flex flex-col w-full justify-between py-4"}>
+        <div className="flex flex-col w-full justify-between py-4">
           <Input
-            name={"confirmPassword"}
-            label={"Confirm Password:"}
-            type={"password"}
+            name="confirmPassword"
+            label="Confirm Password:"
+            type="password"
           />
         </div>
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"mobile"} label={"Mobile:"} type={"text"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="mobile" label="Mobile:" type="text" />
         </div>
-        <div className={"flex justify-between w-full items-center"}>
+        <div className="flex justify-between w-full items-center">
           <Link
-            className={
-              " bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            }
-            to={"/auth/login"}
+            className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            to="/auth/login"
           >
             Login
           </Link>
-          <SubmitButton
-            submitText={"Sign Up"}
-            submittingText={"processing.."}
-          />
+          <SubmitButton submitText="Sign Up" submittingText="processing.." />
         </div>
       </ValidatedForm>
     </section>

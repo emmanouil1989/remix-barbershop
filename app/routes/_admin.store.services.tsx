@@ -26,19 +26,15 @@ export async function loader() {
 export default function AdminServices() {
   const { storeServices } = useLoaderData<typeof loader>();
   return (
-    <section className={"flex flex-col h-full w-full"}>
-      <div className={"pt-4 flex justify-end"}>
-        <Link to={"/store/services/new"} className={"button"}>
+    <section className="flex flex-col h-full w-full">
+      <div className="pt-4 flex justify-end">
+        <Link to="/store/services/new" className="button">
           Create Service
         </Link>
       </div>
 
-      <div className={"flex w-full h-full flex-row items-center "}>
-        <ul
-          className={
-            "w-full flex flex-col h-full gap-4 pt-4 overflow-y-auto overflow-x-hidden"
-          }
-        >
+      <div className="flex w-full h-full flex-row items-center ">
+        <ul className="w-full flex flex-col h-full gap-4 pt-4 overflow-y-auto overflow-x-hidden">
           {storeServices.map(service => {
             return <ServiceListItem key={service.id} service={service} />;
           })}
@@ -56,15 +52,11 @@ function ServiceListItem({
 }) {
   return (
     <Link to={`/store/services/${service.id}`} key={service.id}>
-      <li
-        className={
-          "p-4 border border-solid border-gray-600 flex flex-row justify-between"
-        }
-      >
-        <ListItemContainer className={" w-full"}>
+      <li className="p-4 border border-solid border-gray-600 flex flex-row justify-between">
+        <ListItemContainer className=" w-full">
           <span>{service.name}</span>{" "}
         </ListItemContainer>
-        <ListItemContainer className={"justify-end pr-4"}>
+        <ListItemContainer className="justify-end pr-4">
           <span>{`${service.price} `}&euro;</span>
         </ListItemContainer>
       </li>

@@ -89,34 +89,26 @@ export default function ForgetPassword() {
     : null;
   useSendNotification("Success", notificationMessage);
   return (
-    <section className={"flex items-center justify-center h-full flex-col"}>
+    <section className="flex items-center justify-center h-full flex-col">
       <ValidatedForm
         validator={validator}
-        method={"post"}
-        className={
-          "flex flex-col items-start justify-between sm:w-[400px] w-[300px]"
-        }
+        method="post"
+        className="flex flex-col items-start justify-between sm:w-[400px] w-[300px]"
       >
-        <div className={"flex flex-col w-full justify-between py-4"}>
-          <Input name={"email"} label={"Email:"} type={"email"} />
+        <div className="flex flex-col w-full justify-between py-4">
+          <Input name="email" label="Email:" type="email" />
         </div>
 
-        <div
-          className={
-            "flex flex-col sm:flex-row justify-between w-full items-center gap-4 sm:gap-0"
-          }
-        >
+        <div className="flex flex-col sm:flex-row justify-between w-full items-center gap-4 sm:gap-0">
           <Link
-            className={
-              "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            }
-            to={"/"}
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            to="/"
           >
             Back to Home
           </Link>
           <SubmitButton
-            submitText={"Password Reset"}
-            submittingText={"processing.."}
+            submitText="Password Reset"
+            submittingText="processing.."
           />
         </div>
       </ValidatedForm>

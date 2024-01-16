@@ -19,18 +19,12 @@ export async function loader({ request }: LoaderArgs) {
 }
 export default function AdminServices() {
   return (
-    <section
-      className={"flex flex-row w-full h-full justify-center items-center"}
-    >
-      <div
-        className={
-          "flex flex-1 xl:flex-none xl:w-[1200px] justify-start  flex-col h-full  p-4"
-        }
-      >
-        <h1 className={"py-4 text-3xl font-bold"}>Admin</h1>
+    <section className="flex flex-row w-full h-full justify-center items-center">
+      <div className="flex flex-1 xl:flex-none xl:w-[1200px] justify-start  flex-col h-full  p-4">
+        <h1 className="py-4 text-3xl font-bold">Admin</h1>
 
         <AdminNav />
-        <div className={"flex flex-row w-full h-full"}>
+        <div className="flex flex-row w-full h-full">
           <Outlet />
         </div>
       </div>
@@ -40,12 +34,12 @@ export default function AdminServices() {
 
 function AdminNav() {
   return (
-    <nav className={"flex w-full h-16 border-gray-600 border-solid border p-4"}>
-      <ul className={"flex flex-row w-full items-center"}>
-        <AdminListItem to={"/store/services"} itemName={"Services"} />
-        <AdminListItem to={"/store/bookings"} itemName={"Bookings"} />
-        <AdminListItem to={"/store/gallery"} itemName={"Gallery"} />
-        <AdminListItem itemName={"home"} to={"/"} />
+    <nav className="flex w-full h-16 border-gray-600 border-solid border p-4">
+      <ul className="flex flex-row w-full items-center">
+        <AdminListItem to="/store/services" itemName="Services" />
+        <AdminListItem to="/store/bookings" itemName="Bookings" />
+        <AdminListItem to="/store/gallery" itemName="Gallery" />
+        <AdminListItem itemName="home" to="/" />
       </ul>
     </nav>
   );
@@ -57,7 +51,7 @@ type AdminListItemProps = {
 };
 export function AdminListItem({ itemName, to }: AdminListItemProps) {
   return (
-    <li className={"px-4"}>
+    <li className="px-4">
       <Link to={to}>{itemName}</Link>
     </li>
   );

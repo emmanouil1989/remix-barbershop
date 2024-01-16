@@ -1,5 +1,4 @@
-import { Link, useSearchParams } from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useSearchParams, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { authenticator, login } from "~/services/auth.server";
@@ -73,39 +72,37 @@ export default function Login() {
   useSendNotification("Error", error);
   useSendNotification("Success", notificationMessage);
   return (
-    <section className={"flex h-full justify-center items-center flex-col"}>
+    <section className="flex h-full justify-center items-center flex-col">
       <h1>Login</h1>
 
       <ValidatedForm
-        method={"post"}
+        method="post"
         validator={validator}
         defaultValues={defaultValues}
-        className={" min-h-max p-8 w-[400px] "}
+        className=" min-h-max p-8 w-[400px] "
       >
         <input
           type="hidden"
           name="redirectTo"
           value={params.get("redirectTo") ?? undefined}
         />
-        <div className={"flex flex-col justify-between py-4"}>
-          <Input type={"text"} name={"email"} label={"Email:"} />
+        <div className="flex flex-col justify-between py-4">
+          <Input type="text" name="email" label="Email:" />
         </div>
-        <div className={"flex flex-col justify-between py-4"}>
-          <Input type={"password"} name={"password"} label={"Password:"} />
+        <div className="flex flex-col justify-between py-4">
+          <Input type="password" name="password" label="Password:" />
         </div>
-        <div className={"py-4"}>
-          <Link to={"/auth/forget-password"}>Forgot your password?</Link>
+        <div className="py-4">
+          <Link to="/auth/forget-password">Forgot your password?</Link>
         </div>
-        <div className={"flex flex-row justify-between items-center w-full"}>
+        <div className="flex flex-row justify-between items-center w-full">
           <Link
-            className={
-              " bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            }
-            to={"/auth/register"}
+            className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            to="/auth/register"
           >
             Sign Up
           </Link>
-          <SubmitButton submitText={"Login"} submittingText={"Logging in"} />
+          <SubmitButton submitText="Login" submittingText="Logging in" />
         </div>
       </ValidatedForm>
     </section>
