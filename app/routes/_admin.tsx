@@ -1,3 +1,4 @@
+import React from "react";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { authenticator } from "~/services/auth.server";

@@ -11,5 +11,13 @@ module.exports = {
       'error',
       { props: 'never', children: 'never' },
     ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // or "error"
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   }
 };

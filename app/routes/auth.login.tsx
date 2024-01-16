@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useSearchParams, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";

@@ -11,7 +11,7 @@ import {
   getMinutes,
 } from "date-fns";
 import type { ReactNode } from "react";
-import { useContext, createContext } from "react";
+import React, { useContext, createContext } from "react";
 import { useInitialDateState } from "~/components/Calendar/Calendar";
 
 export function getCurrentMonth(date: Date) {
