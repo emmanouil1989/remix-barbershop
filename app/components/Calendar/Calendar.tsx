@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   getCurrentMonth,
   getCurrentYear,
@@ -20,18 +20,14 @@ export default function Calendar() {
   const arrayOfMonthDays = getListOfSevenDayLists(date);
   const navigate = useNavigate();
   return (
-    <div
-      className={
-        "flex flex-col max-w-[300px] max-h-[310px] mt-16 p-4 border border-solid border-gray-600"
-      }
-    >
-      <div className={"flex flex-row items-center justify-between mx-4 pl-1"}>
-        <div className={"flex flex-row gap-2 items-center"}>
+    <div className="flex flex-col max-w-[300px] max-h-[310px] mt-16 p-4 border border-solid border-gray-600">
+      <div className="flex flex-row items-center justify-between mx-4 pl-1">
+        <div className="flex flex-row gap-2 items-center">
           <h2>{month}</h2>
           <h2>{year}</h2>
         </div>
 
-        <div className={"flex flex-row items-center gap-4"}>
+        <div className="flex flex-row items-center gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -64,24 +60,17 @@ export default function Calendar() {
           </svg>
         </div>
       </div>
-      <div
-        className={
-          "table border-spacing-1 border-separate w-full text-center table-fixed py-4"
-        }
-      >
-        <div className={"table-row h-[28px]"}>
+      <div className="table border-spacing-1 border-separate w-full text-center table-fixed py-4">
+        <div className="table-row h-[28px]">
           {weekDaysInitialsArray.map((day, index) => (
-            <span
-              key={day + index}
-              className={"table-cell text-sm align-middle"}
-            >
+            <span key={day + index} className="table-cell text-sm align-middle">
               {day}
             </span>
           ))}
         </div>
-        <div className={"table-row-group"}>
+        <div className="table-row-group">
           {arrayOfMonthDays.map((week, index) => (
-            <div className={"table-row h-[28px]"} key={index}>
+            <div className="table-row h-[28px]" key={index}>
               {week.map((dayRecord, index) => {
                 const isDuplicated = dayRecord.month !== getMonthNumber(date);
 

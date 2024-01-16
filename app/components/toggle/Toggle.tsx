@@ -22,7 +22,7 @@ function Switch({ initialValue, onClick, name }: SwitchProps) {
         
         `}
     >
-      {name && <input name={name} type={"hidden"} value={on.toString()} />}
+      {name && <input name={name} type="hidden" value={on.toString()} />}
       <span
         className={`
             w-6 h-6 transform bg-white rounded-full

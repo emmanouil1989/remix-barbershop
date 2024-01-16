@@ -6,7 +6,7 @@ import { prisma } from "~/db.server";
 import bcrypt from "bcrypt";
 import { addDays } from "date-fns";
 import { encrypt } from "~/services/encryption.server";
-import { VerificationToken } from "@prisma/client";
+import type { VerificationToken } from "@prisma/client";
 
 export const authenticator = new Authenticator<string | null>(sessionStorage, {
   sessionKey: "userId",

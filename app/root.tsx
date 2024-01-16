@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./styles/app.css";
 import type { MetaFunction } from "@remix-run/node";
 import {

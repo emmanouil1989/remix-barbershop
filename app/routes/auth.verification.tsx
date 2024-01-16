@@ -1,3 +1,4 @@
+import React from "react";
 import type { LoaderArgs, MetaFunction, SerializeFrom } from "@remix-run/node";
 import {
   authenticator,

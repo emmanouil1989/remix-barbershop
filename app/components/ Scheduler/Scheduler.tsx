@@ -50,22 +50,18 @@ function MonthView() {
   const arrayOfMonthDays = getListOfSevenDayLists(date);
 
   return (
-    <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
+    <div className="flex flex-col w-full h-full max-h-[calc(100vh-20rem)]">
       <div>
         {arrayOfMonthDays.map((week, index) => (
           <div
             key={`day-${index}`}
-            className={
-              "grid grid-cols-7 first:border-t  border-gray-600 border-l "
-            }
+            className="grid grid-cols-7 first:border-t  border-gray-600 border-l "
           >
             {week.map(dayRecord => {
               const isDuplicated = dayRecord.month !== getMonthNumber(date);
               return (
                 <div
-                  className={
-                    "w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col justify-between gap-1 "
-                  }
+                  className="w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col justify-between gap-1 "
                   key={dayRecord.day}
                 >
                   <div
@@ -90,7 +86,7 @@ function WeekView({
   weekDatesAndNamesArray,
 }: ScheduleBodyProps) {
   return (
-    <div className={"flex flex-col w-full h-full max-h-[calc(100vh-20rem)]"}>
+    <div className="flex flex-col w-full h-full max-h-[calc(100vh-20rem)]">
       <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
       <ScheduleBody
         weekDatesAndNamesArray={weekDatesAndNamesArray}
@@ -109,36 +105,34 @@ function ScheduleBody({
   const dayHours = getHoursOfTheDay();
   return (
     <div
-      className={
-        "flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto"
-      }
+      className="flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto"
     >
       {[
         <div
-          key={"times"}
-          className={"grid grid-flow-row -mt-[0.7rem] grid-cols-[3rem]"}
+          key="times"
+          className="grid grid-flow-row -mt-[0.7rem] grid-cols-[3rem]"
         >
           {dayHours.map(hour => {
             return (
               <div
-                className={"flex flex-col items-center  w-full h-16 "}
+                className="flex flex-col items-center  w-full h-16 "
                 key={hour}
               >
-                <span className={"text-sm"}>{hour}</span>
+                <span className="text-sm">{hour}</span>
               </div>
             );
           })}
         </div>,
-        <div key={"extra-column"} className={"grid grid-flow-row"}>
+        <div key="extra-column" className="grid grid-flow-row">
           {dayHours.map(hour => (
             <div
               key={hour}
-              className={`flex flex-col w-4 h-16 border-t border-solid border-gray-600`}
+              className="flex flex-col w-4 h-16 border-t border-solid border-gray-600"
             />
           ))}
         </div>,
         ...weekDatesAndNamesArray.map(({ weekDay }, index) => (
-          <div key={weekDay} className={"grid grid-flow-row w-full h-full"}>
+          <div key={weekDay} className="grid grid-flow-row w-full h-full">
             {[
               ...dayHours.map(hour => {
                 const booking = bookingsWithDaysAndHours?.[weekDay]?.[hour];
@@ -163,7 +157,7 @@ function ScheduleBody({
                       }  w-full max-w-[6rem]  h-full`}
                     >
                       {booking?.user.firstName && (
-                        <span className={"truncate"}>
+                        <span className="truncate">
                           {`${booking?.user?.firstName} - ${booking?.services[0].storeService.name}`}
                         </span>
                       )}
@@ -177,7 +171,7 @@ function ScheduleBody({
                       } w-full max-w-[6rem]  h-full`}
                     >
                       {halfHourBooking?.user.firstName && (
-                        <span className={"truncate w-full h-full"}>
+                        <span className="truncate w-full h-full">
                           {`${halfHourBooking?.user?.firstName} - ${halfHourBooking?.services[0].storeService.name}`}
                         </span>
                       )}
@@ -199,21 +193,19 @@ type ScheduleHeaderProps = {
 function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
   const { dayParam } = useCalendarContext();
   return (
-    <div className={"flex"}>
+    <div className="flex">
       {[
         <div
-          key={"times-header"}
-          className={
-            "grid grid-flow-row -mt-[0.7rem] items-end  grid-cols-[3rem]"
-          }
+          key="times-header"
+          className="grid grid-flow-row -mt-[0.7rem] items-end  grid-cols-[3rem]"
         >
-          <div className={"flex flex-col items-center gap-0.5  w-full h-16 "}>
-            <span className={"text-sm"}>GMT</span>
-            <span className={"text-sm"}>{getGMTOffset()}</span>
+          <div className="flex flex-col items-center gap-0.5  w-full h-16 ">
+            <span className="text-sm">GMT</span>
+            <span className="text-sm">{getGMTOffset()}</span>
           </div>
         </div>,
-        <div key={"extra-column-header"} className={"grid grid-flow-row"}>
-          <div className={`flex flex-col w-4 h-16`} />
+        <div key="extra-column-header" className="grid grid-flow-row">
+          <div className="flex flex-col w-4 h-16" />
         </div>,
         ...weekDatesAndNamesArray.map(weekDateAndNameRecord => {
           const isSelected = Number(dayParam) === weekDateAndNameRecord.weekDay;
@@ -221,13 +213,13 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
           return (
             <div
               key={weekDateAndNameRecord.weekDay}
-              className={"flex flex-col w-full h-full"}
+              className="flex flex-col w-full h-full"
             >
               <div
                 key={weekDateAndNameRecord.weekDay}
-                className={"flex flex-col w-full h-15    items-center"}
+                className="flex flex-col w-full h-15    items-center"
               >
-                <h2 className={"text-sm"}>
+                <h2 className="text-sm">
                   {weekDateAndNameRecord.weekInitial}
                 </h2>
                 <h2
@@ -241,7 +233,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
                 </h2>
               </div>
               <div
-                className={"h-6 w-4 border-l border-solid border-gray-600"}
+                className="h-6 w-4 border-l border-solid border-gray-600"
               />
             </div>
           );

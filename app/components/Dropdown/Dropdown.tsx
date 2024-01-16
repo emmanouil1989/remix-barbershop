@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export type DropdownProps = {
   selectedValue?: string;
@@ -34,15 +34,13 @@ export default function Dropdown({
   return (
     <div className=" relative" ref={ref}>
       <div
-        className={
-          " flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer  w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
-        }
+        className=" flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer  w-full max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
         onClick={() => setIsOpen(!isOpen)}
       >
         <button
           aria-haspopup="true"
           aria-expanded="true"
-          className={"text-ellipsis"}
+          className="text-ellipsis"
         >
           {label}
         </button>
@@ -62,18 +60,12 @@ export default function Dropdown({
         </svg>
       </div>
       {isOpen && (
-        <div
-          className={
-            "block  w-full max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white"
-          }
-        >
+        <div className="block  w-full max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white">
           {options.map(option => {
             return (
               <button
                 key={option.value}
-                className={
-                  "block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
-                }
+                className="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
                 onClick={() => {
                   setIsOpen(false);
 
