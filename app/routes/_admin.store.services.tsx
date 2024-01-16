@@ -50,9 +50,14 @@ function ServiceListItem({
 }: {
   service: SerializeFrom<StoreServices>;
 }) {
+  const isDisabled = !service.enabled;
   return (
     <Link to={`/store/services/${service.id}`} key={service.id}>
-      <li className="p-4 border border-solid border-gray-600 flex flex-row justify-between">
+      <li
+        className={`${
+          isDisabled ? "opacity-40 cursor-not-allowed" : ""
+        } p-4 border border-solid border-gray-600 flex flex-row justify-between`}
+      >
         <ListItemContainer className=" w-full">
           <span>{service.name}</span>{" "}
         </ListItemContainer>
