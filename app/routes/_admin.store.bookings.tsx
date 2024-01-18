@@ -18,11 +18,6 @@ import type { Booking } from "@prisma/client";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { getDate } from "date-fns";
 
-export type TimeViewsType = "Month" | "Week";
-export const isTypeViewType = (value: unknown): value is TimeViewsType => {
-  return value === "Month" || value === "Week";
-};
-
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
   const year = url.searchParams.get("year");
@@ -104,13 +99,6 @@ export default function AdminStoreBookings() {
   );
 }
 
-const useDropdownOptions = (): Array<DropdownOption> => {
-  return [
-    { value: "Month", label: "Month View" },
-    { value: "Week", label: "Week View" },
-  ];
-};
-
 function AppointmentScheduleHeader() {
   const options = useDropdownOptions();
   const navigate = useNavigate();
@@ -130,3 +118,14 @@ function AppointmentScheduleHeader() {
     </div>
   );
 }
+
+export type TimeViewsType = "Month" | "Week";
+export const isTypeViewType = (value: unknown): value is TimeViewsType => {
+  return value === "Month" || value === "Week";
+};
+const useDropdownOptions = (): Array<DropdownOption> => {
+  return [
+    { value: "Month", label: "Month View" },
+    { value: "Week", label: "Week View" },
+  ];
+};

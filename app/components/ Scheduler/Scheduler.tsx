@@ -104,9 +104,7 @@ function ScheduleBody({
 }: ScheduleBodyProps) {
   const dayHours = getHoursOfTheDay();
   return (
-    <div
-      className="flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto"
-    >
+    <div className="flex  flex-row h-full w-full overflow-x-hidden overflow-y-auto">
       {[
         <div
           key="times"
@@ -219,9 +217,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
                 key={weekDateAndNameRecord.weekDay}
                 className="flex flex-col w-full h-15    items-center"
               >
-                <h2 className="text-sm">
-                  {weekDateAndNameRecord.weekInitial}
-                </h2>
+                <h2 className="text-sm">{weekDateAndNameRecord.weekInitial}</h2>
                 <h2
                   className={`w-12 flex justify-center items-center ${
                     isSelected
@@ -232,9 +228,7 @@ function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
                   {weekDateAndNameRecord.weekDay}
                 </h2>
               </div>
-              <div
-                className="h-6 w-4 border-l border-solid border-gray-600"
-              />
+              <div className="h-6 w-4 border-l border-solid border-gray-600" />
             </div>
           );
         }),
