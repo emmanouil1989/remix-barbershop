@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import type { SerializeFrom } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
@@ -26,7 +26,7 @@ export async function loader() {
 export default function AdminServices() {
   const { storeServices } = useLoaderData<typeof loader>();
   return (
-    <section className="flex flex-col h-full xl:w-[1200px]">
+    <section className="flex flex-col h-full xl:w-[1200px] overflow-hidden">
       <div className="pt-4 flex justify-end">
         <Link to="/store/services/new" className="button">
           Create Service
@@ -34,7 +34,7 @@ export default function AdminServices() {
       </div>
 
       <div className="flex w-full h-full flex-row items-center ">
-        <ul className="w-full flex flex-col h-full gap-4 pt-4 overflow-y-auto overflow-x-hidden">
+        <ul className="w-full flex flex-col h-full gap-4 p-4 overflow-y-auto overflow-x-hidden">
           {storeServices.map(service => {
             return <ServiceListItem key={service.id} service={service} />;
           })}
@@ -50,13 +50,16 @@ function ServiceListItem({
 }: {
   service: SerializeFrom<StoreServices>;
 }) {
+  const urlParamsRecord = useParams();
+  const urlServiceId = urlParamsRecord["id"];
   const isDisabled = !service.enabled;
+  const isSelected = service.id === urlServiceId;
   return (
     <Link to={`/store/services/${service.id}`} key={service.id}>
       <li
-        className={`${
-          isDisabled ? "opacity-40 cursor-not-allowed" : ""
-        } p-4 border border-solid border-gray-600 flex flex-row justify-between`}
+        className={`${isDisabled ? "opacity-40 cursor-not-allowed" : ""} p-4 ${
+          isSelected ? "border-4" : "border"
+        } border-solid border-gray-600 flex flex-row justify-between`}
       >
         <ListItemContainer className=" w-full">
           <span>{service.name}</span>{" "}
