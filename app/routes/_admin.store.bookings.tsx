@@ -90,7 +90,7 @@ export default function AdminStoreBookings() {
       <CalendarContextProvider>
         <AppointmentScheduleHeader />
 
-        <div className="grid grid-cols-[max-content_1fr] gap-4">
+        <div className="grid grid-cols-[max-content_1fr] gap-4 p-4">
           <Calendar />
           <Scheduler bookingsWithDaysAndHours={bookingsWithDaysAndHours} />
         </div>
@@ -104,17 +104,19 @@ function AppointmentScheduleHeader() {
   const navigate = useNavigate();
   const { timeView } = useCalendarContext();
   return (
-    <div className="flex flex-row items-center justify-end gap-4 pb-4">
-      <Dropdown
-        selectedValue={timeView}
-        onChange={(value: string) => {
-          if (isTypeViewType(value)) {
-            navigate(`/store/bookings?tableView=${value}`);
-          }
-        }}
-        options={options}
-      />
-      <Button>Add Booking</Button>
+    <div className="h-full w-full flex items-center justify-center">
+      <div className="flex flex-row xl:w-[1200px] items-center justify-end gap-4 pb-4">
+        <Dropdown
+          selectedValue={timeView}
+          onChange={(value: string) => {
+            if (isTypeViewType(value)) {
+              navigate(`/store/bookings?tableView=${value}`);
+            }
+          }}
+          options={options}
+        />
+        <Button>Add Booking</Button>
+      </div>
     </div>
   );
 }

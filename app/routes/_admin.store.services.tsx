@@ -26,7 +26,7 @@ export async function loader() {
 export default function AdminServices() {
   const { storeServices } = useLoaderData<typeof loader>();
   return (
-    <section className="flex flex-col h-full w-full">
+    <section className="flex flex-col h-full xl:w-[1200px]">
       <div className="pt-4 flex justify-end">
         <Link to="/store/services/new" className="button">
           Create Service

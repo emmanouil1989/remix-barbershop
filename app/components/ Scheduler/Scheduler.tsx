@@ -152,24 +152,24 @@ function ScheduleBody({
                         booking && booking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      }  w-full max-w-[6rem]  h-full`}
+                      }  w-full items-center max-w-[8.5rem] h-full`}
                     >
                       {booking?.user.firstName && (
-                        <span className="truncate">
+                        <span className="truncate text-[0.65rem]">
                           {`${booking?.user?.firstName} - ${booking?.services[0].storeService.name}`}
                         </span>
                       )}
                     </div>
 
                     <div
-                      className={`flex py-0.5 px-1 mb-1 text-white text-sm ${
+                      className={`flex py-0.5 px-1 mb-1 text-white ${
                         halfHourBooking && halfHourBooking.start
                           ? "bg-gray-600 cursor-pointer"
                           : ""
-                      } w-full max-w-[6rem]  h-full`}
+                      } w-full items-center max-w-[8.5rem]  h-full`}
                     >
                       {halfHourBooking?.user.firstName && (
-                        <span className="truncate w-full h-full">
+                        <span className="truncate text-[0.65rem]">
                           {`${halfHourBooking?.user?.firstName} - ${halfHourBooking?.services[0].storeService.name}`}
                         </span>
                       )}
