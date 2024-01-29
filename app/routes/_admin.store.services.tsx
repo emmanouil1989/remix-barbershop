@@ -34,7 +34,7 @@ export default function AdminServices() {
       </div>
 
       <div className="flex w-full h-full flex-row items-center ">
-        <ul className="w-full flex flex-col h-full gap-4 p-4 overflow-y-auto overflow-x-hidden">
+        <ul className="w-full flex flex-col h-5/6 gap-4 p-4 overflow-y-auto overflow-x-hidden">
           {storeServices.map(service => {
             return <ServiceListItem key={service.id} service={service} />;
           })}
