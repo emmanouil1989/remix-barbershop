@@ -29,7 +29,7 @@ export async function loader({ request }: LoaderArgs) {
     date = new Date(Number(year), calculatedMonth, Number(day) + 1);
   }
 
-  const { firstDayOfWeek, lastDayOfWeek } =
+  const { firstDateOfWeekDate, lastDateOfWeekDate } =
     getFirstAndDateOfWeekForAGivenDate(date);
   let bookings: Array<Booking> = [];
   const store = await prisma.store.findFirst();
@@ -47,8 +47,8 @@ export async function loader({ request }: LoaderArgs) {
         storeId: store.id,
         AND: {
           start: {
-            gte: firstDayOfWeek,
-            lte: lastDayOfWeek,
+            gte: firstDateOfWeekDate,
+            lte: lastDateOfWeekDate,
           },
         },
       },

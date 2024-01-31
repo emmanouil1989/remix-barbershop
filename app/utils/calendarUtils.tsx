@@ -149,7 +149,8 @@ export function getWeekDatesAndNames(date: Date) {
     );
     const weekInitial = day.toLocaleString("default", { weekday: "short" });
     const weekDay = weekDates[i].day;
-    weekDays.push({ weekDay, weekInitial });
+    const month = weekDates[i].month;
+    weekDays.push({ weekDay, month, weekInitial });
   }
   return weekDays;
 }
@@ -235,22 +236,22 @@ export function getGMTOffset() {
 export function getFirstAndDateOfWeekForAGivenDate(date: Date) {
   const weekDatesAndNamesArray = getWeekDatesAndNames(date);
   const firstDayOfWeek = weekDatesAndNamesArray[0].weekDay;
-
+  const monthOfFirstDayOfWeek = weekDatesAndNamesArray[0].month;
   const lastDayOfWeek = weekDatesAndNamesArray[6].weekDay;
-
-  const firstDayOfWeekDate = new Date(
+  const monthOfLastDayOfWeek = weekDatesAndNamesArray[6].month;
+  const firstDateOfWeekDate = new Date(
     getYear(date),
-    getMonth(date),
-    firstDayOfWeek + 1,
+    monthOfFirstDayOfWeek - 1,
+    firstDayOfWeek,
   );
-  const lastDayOfWeekDate = new Date(
+  const lastDateOfWeekDate = new Date(
     getYear(date),
-    getMonth(date),
-    lastDayOfWeek + 1,
+    monthOfLastDayOfWeek - 1,
+    lastDayOfWeek,
   );
   return {
-    firstDayOfWeek: firstDayOfWeekDate,
-    lastDayOfWeek: lastDayOfWeekDate,
+    firstDateOfWeekDate,
+    lastDateOfWeekDate,
   };
 }
 
