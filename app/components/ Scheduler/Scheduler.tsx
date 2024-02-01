@@ -2,14 +2,14 @@ import {
   addHalfHourToAmPmDay,
   getGMTOffset,
   getHoursOfTheDay,
-  getListOfSevenDayLists,
-  getMonthNumber,
   getWeekDatesAndNames,
   useCalendarContext,
 } from "~/utils/calendarUtils";
 import React from "react";
 import type { SerializeFrom } from "@remix-run/node";
 import type { Prisma } from "@prisma/client";
+import MonthView from "./MonthView";
+import WeekView from "./WeekView";
 
 type BookingServices = Prisma.BookingGetPayload<{
   include: {
@@ -22,7 +22,9 @@ type BookingServices = Prisma.BookingGetPayload<{
   };
 }>;
 export type HourBooking = Record<string, BookingServices>;
-type BookingsWithDaysAndHours = SerializeFrom<Record<string, HourBooking>>;
+export type BookingsWithDaysAndHours = SerializeFrom<
+  Record<string, HourBooking>
+>;
 type ScheduleProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
 };
@@ -41,64 +43,13 @@ export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
     );
   }
 
-  return <MonthView />;
+  return <MonthView bookingsWithDaysAndHours={bookingsWithDaysAndHours} />;
 }
 
-function MonthView() {
-  const { dateState } = useCalendarContext();
-  const [date] = dateState;
-  const arrayOfMonthDays = getListOfSevenDayLists(date);
-
-  return (
-    <div className="flex flex-col w-full h-full max-h-[calc(100vh-20rem)]">
-      <div>
-        {arrayOfMonthDays.map((week, index) => (
-          <div
-            key={`day-${index}`}
-            className="grid grid-cols-7 first:border-t  border-gray-600 border-l "
-          >
-            {week.map(dayRecord => {
-              const isDuplicated = dayRecord.month !== getMonthNumber(date);
-              return (
-                <div
-                  className="w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col justify-between gap-1 "
-                  key={dayRecord.day}
-                >
-                  <div
-                    className={`flex justify-center w-full ${
-                      isDuplicated ? "text-gray-400" : ""
-                    }`}
-                  >
-                    {dayRecord.day}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function WeekView({
-  bookingsWithDaysAndHours,
-  weekDatesAndNamesArray,
-}: ScheduleBodyProps) {
-  return (
-    <div className="flex flex-col w-full h-full max-h-[calc(100vh-20rem)]">
-      <ScheduleHeader weekDatesAndNamesArray={weekDatesAndNamesArray} />
-      <ScheduleBody
-        weekDatesAndNamesArray={weekDatesAndNamesArray}
-        bookingsWithDaysAndHours={bookingsWithDaysAndHours}
-      />
-    </div>
-  );
-}
-type ScheduleBodyProps = ScheduleHeaderProps & {
+export type ScheduleBodyProps = ScheduleHeaderProps & {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
 };
-function ScheduleBody({
+export function ScheduleBody({
   weekDatesAndNamesArray,
   bookingsWithDaysAndHours,
 }: ScheduleBodyProps) {
@@ -185,10 +136,12 @@ function ScheduleBody({
   );
 }
 
-type ScheduleHeaderProps = {
+export type ScheduleHeaderProps = {
   weekDatesAndNamesArray: ReturnType<typeof getWeekDatesAndNames>;
 };
-function ScheduleHeader({ weekDatesAndNamesArray }: ScheduleHeaderProps) {
+export function ScheduleHeader({
+  weekDatesAndNamesArray,
+}: ScheduleHeaderProps) {
   const { dayParam } = useCalendarContext();
   return (
     <div className="flex">
