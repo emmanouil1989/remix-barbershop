@@ -29,7 +29,7 @@ export default function MonthView({
               const isDuplicated = dayRecord.month !== getMonthNumber(date);
               return (
                 <div
-                  className="w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col justify-between gap-1 "
+                  className="w-full h-[200px] border-b border-r border-gray-600 p-2 flex flex-col gap-1 "
                   key={dayRecord.day}
                 >
                   <div
@@ -39,20 +39,24 @@ export default function MonthView({
                   >
                     {dayRecord.day}
                   </div>
-                  <ul className="flex flex-col gap-1 overflow-x-hidden overflow-y-auto">
+                  <ul className="flex flex-col justify-center overflow-x-hidden overflow-y-auto">
                     {bookingsWithDaysAndHours?.[dayRecord.day] &&
                       Object.keys(bookingsWithDaysAndHours[dayRecord.day]).map(
                         hour => {
                           const booking =
                             bookingsWithDaysAndHours?.[dayRecord.day]?.[hour];
                           if (isDuplicated) return null;
+
                           return (
                             <li
                               key={hour}
-                              className="flex flex-row items-center gap-1"
+                              className="flex flex-row items-center gap-2"
                             >
-                              <span>{hour}</span>
-                              <span>{booking?.user.firstName}</span>
+                              <div className=" border border-4 border-solid border-gray-600 rounded" />
+                              <span className="text-sm font-bold">{hour}</span>
+                              <span className="text-sm">
+                                {booking?.user?.firstName}
+                              </span>
                             </li>
                           );
                         },
