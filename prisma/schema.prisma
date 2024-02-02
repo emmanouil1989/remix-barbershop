@@ -3,39 +3,38 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-  id            String      @id @default(uuid())
-  email         String      @unique(map: "User.email_unique")
-  password      String
-  firstName     String
-  lastName      String
-  mobilePhone   String
+  id              String    @id @default(uuid())
+  email           String    @unique(map: "User.email_unique")
+  password        String
+  firstName       String
+  lastName        String
+  mobilePhone     String
   emailVerifiedAt DateTime? @map("email_verified_at")
 
+  role     Role      @default(USER)
+  bookings Booking[]
+  sessions Session[]
 
-  role          Role        @default(USER)
-  bookings      Booking[]
-  sessions      Session[]
   @@map("user")
 }
 
 model VerificationToken {
-    id      String   @id @default(uuid())
-    userId  String   @map("user_id")
-    token   String   @unique
-    expires DateTime
+  id      String   @id @default(uuid())
+  userId  String   @map("user_id")
+  token   String   @unique
+  expires DateTime
 
-    @@unique([userId, token])
-    @@map("verification_tokens")
+  @@unique([userId, token])
+  @@map("verification_tokens")
 }
 
 enum Role {
@@ -43,67 +42,71 @@ enum Role {
   USER
 }
 
-
 model Session {
-  id                String   @id @default(uuid())
-  createdAt         DateTime @default(now())
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String
-  expirationDate    DateTime?
+  id             String    @id @default(uuid())
+  createdAt      DateTime  @default(now())
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  expirationDate DateTime?
+
   @@map("session")
 }
+
 model Store {
-  id                String      @id @default(uuid())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  name              String
-  address           String
-  city              String
-  postalCode        String
-  country           String
-  phone             String
-  email             String
-  storeServices     StoreServices[]
-  bookings          Booking[]
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  name          String
+  address       String
+  city          String
+  postalCode    String
+  country       String
+  phone         String
+  email         String
+  storeServices StoreServices[]
+  bookings      Booking[]
+
   @@map("store")
 }
 
 model StoreServices {
-    id        String        @id @default(uuid())
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @updatedAt
-    name      String
-    price     Decimal       @db.Decimal(10,2)
-    store     Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    storeId   String
-    services  Service[]
-    enabled   Boolean       @default(true)
-    @@map("store_services")
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  price     Decimal   @db.Decimal(10, 2)
+  store     Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId   String
+  services  Service[]
+  enabled   Boolean   @default(true)
 
+  @@map("store_services")
 }
 
 model Service {
-    id              String            @id @default(uuid())
-    createdAt       DateTime          @default(now())
-    updatedAt       DateTime          @updatedAt
-    duration        Int?
-    storeService    StoreServices     @relation(fields: [storeServiceId], references: [id], onDelete: Cascade)
-    storeServiceId  String
-    booking         Booking?          @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-    bookingId       String?
-    @@map("services")
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  duration       Int?
+  storeService   StoreServices @relation(fields: [storeServiceId], references: [id], onDelete: Cascade)
+  storeServiceId String
+  booking        Booking?      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId      String?
+
+  @@map("services")
 }
 
 model Booking {
-  id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   services  Service[]
-  store     Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  store     Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId   String
   start     DateTime
   end       DateTime
+
   @@map("bookings")
 }

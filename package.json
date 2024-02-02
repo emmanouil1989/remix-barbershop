@@ -17,6 +17,8 @@
   "dependencies": {
     "@netlify/functions": "^1.6.0",
     "@prisma/client": "^4.16.2",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-select": "^2.0.0",
     "@remix-run/netlify": "^1.19.3",
     "@remix-run/node": "^1.19.3",
     "@remix-run/react": "^1.19.3",
