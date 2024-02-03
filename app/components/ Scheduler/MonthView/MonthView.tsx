@@ -13,7 +13,6 @@ export default function MonthView({
   bookingsWithDaysAndHours,
 }: MonthViewProps) {
   const { dateState } = useCalendarContext();
-  console.log({ bookingsWithDaysAndHours });
   const [date] = dateState;
   const arrayOfMonthDays = getListOfSevenDayLists(date);
 

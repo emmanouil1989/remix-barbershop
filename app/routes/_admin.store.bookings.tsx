@@ -1,6 +1,4 @@
 import React from "react";
-import type { DropdownOption } from "~/components/Dropdown/Dropdown";
-import Dropdown from "~/components/Dropdown/Dropdown";
 import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
 import {
@@ -17,6 +15,8 @@ import { json } from "@remix-run/node";
 import type { Booking } from "@prisma/client";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { getDate } from "date-fns";
+import Select from "~/components/Select";
+import type { SelectItemProps } from "@radix-ui/react-select";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -100,20 +100,20 @@ export default function AdminStoreBookings() {
 }
 
 function AppointmentScheduleHeader() {
-  const options = useDropdownOptions();
+  const selectOptions = useSelectOptions();
   const navigate = useNavigate();
   const { timeView } = useCalendarContext();
   return (
     <div className="h-full w-full flex items-center justify-center">
       <div className="flex flex-row xl:w-[1200px] items-center justify-end gap-4 pb-4">
-        <Dropdown
+        <Select
           selectedValue={timeView}
           onChange={(value: string) => {
             if (isTypeViewType(value)) {
               navigate(`/store/bookings?tableView=${value}`);
             }
           }}
-          options={options}
+          options={selectOptions}
         />
         <Button>Add Booking</Button>
       </div>
@@ -125,9 +125,10 @@ export type TimeViewsType = "Month" | "Week";
 export const isTypeViewType = (value: unknown): value is TimeViewsType => {
   return value === "Month" || value === "Week";
 };
-const useDropdownOptions = (): Array<DropdownOption> => {
+
+const useSelectOptions = (): Array<SelectItemProps> => {
   return [
-    { value: "Month", label: "Month View" },
-    { value: "Week", label: "Week View" },
+    { value: "Month", textValue: "Month View" },
+    { value: "Week", textValue: "Week View" },
   ];
 };

@@ -49,6 +49,7 @@ model Session {
   userId         String
   expirationDate DateTime?
 
+  @@index([userId])
   @@map("session")
 }
 
@@ -80,6 +81,7 @@ model StoreServices {
   services  Service[]
   enabled   Boolean   @default(true)
 
+  @@index([storeId])
   @@map("store_services")
 }
 
@@ -93,6 +95,8 @@ model Service {
   booking        Booking?      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   bookingId      String?
 
+  @@index([storeServiceId])
+  @@index([bookingId])
   @@map("services")
 }
 
@@ -108,5 +112,7 @@ model Booking {
   start     DateTime
   end       DateTime
 
+  @@index([userId])
+  @@index([storeId])
   @@map("bookings")
 }
