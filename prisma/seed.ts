@@ -121,7 +121,7 @@ async function main() {
     data: {
       firstName: "manos",
       lastName: "koukis",
-      email: "emmanouil.e@hotmail.com",
+      email: "admin@gmail.com",
       password: "$2a$04$2t9xcOy71K4QqkENc2NWS.c3sVrfrOKC8DSH5n39dDMbTb.HSLWEK",
       mobilePhone: "6971234567",
       emailVerifiedAt: faker.date.past(),
