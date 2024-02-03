@@ -255,6 +255,27 @@ export function getFirstAndDateOfWeekForAGivenDate(date: Date) {
   };
 }
 
+export function getFirstAndLastDateOfMonthForAGivenDate(date: Date) {
+  const arrayOfMonthDays = getListOfSevenDayLists(date);
+  const firstDayOfMonthRecord = arrayOfMonthDays[0][0];
+  const lastDayOfMonthRecord = arrayOfMonthDays[arrayOfMonthDays.length - 1][6];
+  const firstDayOfMonth = new Date(
+    firstDayOfMonthRecord.year,
+    firstDayOfMonthRecord.month - 1,
+    firstDayOfMonthRecord.day,
+  );
+  const lastDayOfMonth = new Date(
+    lastDayOfMonthRecord.year,
+    lastDayOfMonthRecord.month - 1,
+    lastDayOfMonthRecord.day,
+  );
+
+  return {
+    firstDayOfMonth,
+    lastDayOfMonth,
+  };
+}
+
 export const useCalendarContext = () => {
   const context = useContext(CalendarContext);
   if (context === undefined) {

@@ -3,7 +3,8 @@ import Button from "~/components/button/Button";
 import Calendar from "~/components/Calendar/Calendar";
 import {
   CalendarContextProvider,
-  getFirstAndDateOfWeekForAGivenDate,
+  getFirstAndLastDateOfMonthForAGivenDate,
+  getFirstAndDateOfWeekForAGivenDate as getFirstAndLastDateOfWeekForAGivenDate,
   getHourFromDate,
   getMonthNumber,
   useCalendarContext,
@@ -24,15 +25,27 @@ export async function loader({ request }: LoaderArgs) {
   const year = url.searchParams.get("year");
   const month = url.searchParams.get("month");
   const day = url.searchParams.get("day");
+  const tableView = url.searchParams.get("tableView");
   let date = new Date();
   if (year && month && day) {
     const calculatedMonth = Number(month) - 1;
-    date = new Date(Number(year), calculatedMonth, Number(day) + 1);
+    date = new Date(Number(year), calculatedMonth, Number(day));
+  }
+  let bookings: Array<Booking> = [];
+  let startDate;
+  let endDate;
+  if (tableView === "Week") {
+    const { firstDateOfWeekDate, lastDateOfWeekDate } =
+      getFirstAndLastDateOfWeekForAGivenDate(date);
+    startDate = firstDateOfWeekDate;
+    endDate = lastDateOfWeekDate;
+  } else {
+    const { firstDayOfMonth, lastDayOfMonth } =
+      getFirstAndLastDateOfMonthForAGivenDate(date);
+    startDate = firstDayOfMonth;
+    endDate = lastDayOfMonth;
   }
 
-  const { firstDateOfWeekDate, lastDateOfWeekDate } =
-    getFirstAndDateOfWeekForAGivenDate(date);
-  let bookings: Array<Booking> = [];
   const store = await prisma.store.findFirst();
   if (store) {
     bookings = await prisma.booking.findMany({
@@ -48,8 +61,8 @@ export async function loader({ request }: LoaderArgs) {
         storeId: store.id,
         AND: {
           start: {
-            gte: firstDateOfWeekDate,
-            lte: lastDateOfWeekDate,
+            gte: startDate,
+            lte: endDate,
           },
         },
       },
@@ -128,7 +141,7 @@ function AppointmentScheduleHeader() {
           selectedValue={timeView}
           onChange={(value: string) => {
             if (isTypeViewType(value)) {
-              navigate(`/store/bookings?tableView=${value}`);
+              navigate(`/store/bookings?tableView=${value}`, { replace: true });
             }
           }}
           options={selectOptions}
