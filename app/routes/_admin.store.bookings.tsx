@@ -5,6 +5,7 @@ import {
   CalendarContextProvider,
   getFirstAndDateOfWeekForAGivenDate,
   getHourFromDate,
+  getMonthNumber,
   useCalendarContext,
 } from "~/utils/calendarUtils";
 import type { HourBooking } from "~/components/ Scheduler/Scheduler";
@@ -55,29 +56,46 @@ export async function loader({ request }: LoaderArgs) {
     });
   }
 
-  const bookingsWithDaysAndHours = bookings.reduce<Record<string, HourBooking>>(
-    (bookingRecord, booking) => {
-      const day = getDate(booking.start);
-      const hour = getHourFromDate(booking.start);
-      if (bookingRecord[day]) {
+  const bookingsWithDaysAndHours = bookings.reduce<
+    Record<string, Record<string, HourBooking>>
+  >((bookingRecord, booking) => {
+    const day = getDate(booking.start);
+    const month = getMonthNumber(booking.start);
+    const hour = getHourFromDate(booking.start);
+    if (bookingRecord[month]) {
+      if (bookingRecord[month][day]) {
         return {
           ...bookingRecord,
-          [day]: {
-            ...bookingRecord[day],
-            [hour]: booking,
+          [month]: {
+            ...bookingRecord[month],
+            [day]: {
+              ...bookingRecord[month][day],
+              [hour]: booking,
+            },
           },
         };
       } else {
         return {
           ...bookingRecord,
-          [day]: {
-            [hour]: booking,
+          [month]: {
+            ...bookingRecord[month],
+            [day]: {
+              [hour]: booking,
+            },
           },
         };
       }
-    },
-    {},
-  );
+    } else {
+      return {
+        ...bookingRecord,
+        [month]: {
+          [day]: {
+            [hour]: booking,
+          },
+        },
+      };
+    }
+  }, {});
 
   return json({ bookingsWithDaysAndHours });
 }

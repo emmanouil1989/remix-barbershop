@@ -39,27 +39,32 @@ export default function MonthView({
                     {dayRecord.day}
                   </div>
                   <ul className="flex flex-col justify-center overflow-x-hidden overflow-y-auto">
-                    {bookingsWithDaysAndHours?.[dayRecord.day] &&
-                      Object.keys(bookingsWithDaysAndHours[dayRecord.day]).map(
-                        hour => {
-                          const booking =
-                            bookingsWithDaysAndHours?.[dayRecord.day]?.[hour];
-                          if (isDuplicated) return null;
+                    {bookingsWithDaysAndHours?.[dayRecord.month]?.[
+                      dayRecord.day
+                    ] &&
+                      Object.keys(
+                        bookingsWithDaysAndHours[dayRecord.month][
+                          dayRecord.day
+                        ],
+                      ).map(hour => {
+                        const booking =
+                          bookingsWithDaysAndHours?.[dayRecord.month]?.[
+                            dayRecord.day
+                          ]?.[hour];
 
-                          return (
-                            <li
-                              key={hour}
-                              className="flex flex-row items-center gap-2"
-                            >
-                              <div className=" border border-4 border-solid border-gray-600 rounded" />
-                              <span className="text-sm font-bold">{hour}</span>
-                              <span className="text-sm">
-                                {booking?.user?.firstName}
-                              </span>
-                            </li>
-                          );
-                        },
-                      )}
+                        return (
+                          <li
+                            key={hour}
+                            className="flex flex-row items-center gap-2"
+                          >
+                            <div className=" border border-4 border-solid border-gray-600 rounded" />
+                            <span className="text-sm font-bold">{hour}</span>
+                            <span className="text-sm">
+                              {booking?.user?.firstName}
+                            </span>
+                          </li>
+                        );
+                      })}
                   </ul>
                 </div>
               );

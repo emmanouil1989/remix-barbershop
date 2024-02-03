@@ -23,7 +23,7 @@ type BookingServices = Prisma.BookingGetPayload<{
 }>;
 export type HourBooking = Record<string, BookingServices>;
 export type BookingsWithDaysAndHours = SerializeFrom<
-  Record<string, HourBooking>
+  Record<string, Record<string, HourBooking>>
 >;
 type ScheduleProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
@@ -80,13 +80,14 @@ export function ScheduleBody({
             />
           ))}
         </div>,
-        ...weekDatesAndNamesArray.map(({ weekDay }, index) => (
+        ...weekDatesAndNamesArray.map(({ weekDay, month }, index) => (
           <div key={weekDay} className="grid grid-flow-row w-full h-full">
             {[
               ...dayHours.map(hour => {
-                const booking = bookingsWithDaysAndHours?.[weekDay]?.[hour];
+                const booking =
+                  bookingsWithDaysAndHours?.[month]?.[weekDay]?.[hour];
                 const halfHourBooking =
-                  bookingsWithDaysAndHours?.[weekDay]?.[
+                  bookingsWithDaysAndHours?.[month]?.[weekDay]?.[
                     addHalfHourToAmPmDay(hour)
                   ];
                 return (
