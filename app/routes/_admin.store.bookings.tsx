@@ -15,10 +15,12 @@ import { prisma } from "~/db.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Booking } from "@prisma/client";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { getDate } from "date-fns";
 import Select from "~/components/Select";
 import type { SelectItemProps } from "@radix-ui/react-select";
+import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
+import { is } from "date-fns/locale";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -126,6 +128,7 @@ export default function AdminStoreBookings() {
           <Scheduler bookingsWithDaysAndHours={bookingsWithDaysAndHours} />
         </div>
       </CalendarContextProvider>
+      <Outlet />
     </div>
   );
 }
@@ -134,6 +137,7 @@ function AppointmentScheduleHeader() {
   const selectOptions = useSelectOptions();
   const navigate = useNavigate();
   const { timeView } = useCalendarContext();
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <div className="h-full w-full flex items-center justify-center">
       <div className="flex flex-row xl:w-[1200px] items-center justify-end gap-4 pb-4">
@@ -146,7 +150,13 @@ function AppointmentScheduleHeader() {
           }}
           options={selectOptions}
         />
-        <Button>Add Booking</Button>
+        <Button
+          onClick={() => {
+            navigate("/store/bookings/new");
+          }}
+        >
+          Add Booking
+        </Button>
       </div>
     </div>
   );
