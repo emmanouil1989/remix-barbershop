@@ -15,7 +15,12 @@ import { prisma } from "~/db.server";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Booking } from "@prisma/client";
-import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Outlet,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "@remix-run/react";
 import { getDate } from "date-fns";
 import Select from "~/components/Select";
 import type { SelectItemProps } from "@radix-ui/react-select";
@@ -137,7 +142,7 @@ function AppointmentScheduleHeader() {
   const selectOptions = useSelectOptions();
   const navigate = useNavigate();
   const { timeView } = useCalendarContext();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [searchParams, _] = useSearchParams();
   return (
     <div className="h-full w-full flex items-center justify-center">
       <div className="flex flex-row xl:w-[1200px] items-center justify-end gap-4 pb-4">
@@ -152,7 +157,7 @@ function AppointmentScheduleHeader() {
         />
         <Button
           onClick={() => {
-            navigate("/store/bookings/new");
+            navigate(`/store/bookings/new?${searchParams.toString()}`);
           }}
         >
           Add Booking
