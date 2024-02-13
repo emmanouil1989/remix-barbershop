@@ -24,8 +24,6 @@ import {
 import { getDate } from "date-fns";
 import Select from "~/components/Select";
 import type { SelectItemProps } from "@radix-ui/react-select";
-import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
-import { is } from "date-fns/locale";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -150,7 +148,13 @@ function AppointmentScheduleHeader() {
           selectedValue={timeView}
           onChange={(value: string) => {
             if (isTypeViewType(value)) {
-              navigate(`/store/bookings?tableView=${value}`, { replace: true });
+              searchParams.delete("tableView");
+              navigate(
+                `/store/bookings?tableView=${value}${searchParams.toString()}`,
+                {
+                  replace: true,
+                },
+              );
             }
           }}
           options={selectOptions}
