@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
-import { useLoaderData, useTransition } from "@remix-run/react";
+import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
 import { Input } from "~/components/Form/Input/Input";
 import Toggle from "~/components/toggle/Toggle";
 import Button from "~/components/button/Button";
+import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
 
 const Validator = withZod(
   zod.object({
@@ -68,10 +69,16 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function ViewServicePage() {
   const { service } = useLoaderData<typeof loader>();
-
+  const [isOpen, setIsOpen] = React.useState(false);
   const transition = useTransition();
   const isUpdating = transition.submission?.formData.get("intent") === "update";
   const isDeleting = transition.submission?.formData.get("intent") === "delete";
+  useEffect(() => {
+    if (isDeleting) {
+      setIsOpen(false);
+    }
+  }, [isDeleting]);
+
   return (
     <section className="flex flex-col w-full h-full pt-4 items-center pl-8">
       <h1>{service.name}</h1>
@@ -100,14 +107,35 @@ export default function ViewServicePage() {
           <Button type="submit" className="button" name="intent" value="update">
             {isUpdating ? "Updating your service..." : "Update Service"}
           </Button>
-          <Button
-            type="submit"
-            name="intent"
-            value="delete"
-            className="bg-red-600 hover:bg-red-700"
+          <Dialog
+            open={isOpen}
+            onOpenChange={() => setIsOpen(!isOpen)}
+            triggerButton={
+              <Button value="delete" className="bg-red-600 hover:bg-red-700">
+                Delete Service
+              </Button>
+            }
           >
-            {isDeleting ? "Deleting service..." : "Delete Service"}
-          </Button>
+            <DialogHeader
+              title="Delete Service"
+              description="Are you sure you want to delete this service?"
+            />
+            <DialogFooter>
+              <Form method="post">
+                <div className="flex justify-end gap-4 mt-4">
+                  <Button
+                    type="submit"
+                    name="intent"
+                    value="delete"
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Yes
+                  </Button>
+                  <Button onClick={() => setIsOpen(false)}>No</Button>
+                </div>
+              </Form>
+            </DialogFooter>
+          </Dialog>
         </div>
       </ValidatedForm>
     </section>
