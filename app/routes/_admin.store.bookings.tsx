@@ -149,12 +149,11 @@ function AppointmentScheduleHeader() {
           onChange={(value: string) => {
             if (isTypeViewType(value)) {
               searchParams.delete("tableView");
-              navigate(
-                `/store/bookings?tableView=${value}${searchParams.toString()}`,
-                {
-                  replace: true,
-                },
-              );
+              const params =
+                searchParams.size > 0 ? `&${searchParams.toString()}` : "";
+              navigate(`/store/bookings?tableView=${value}${params}`, {
+                replace: true,
+              });
             }
           }}
           options={selectOptions}
