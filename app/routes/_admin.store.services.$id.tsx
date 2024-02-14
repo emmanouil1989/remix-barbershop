@@ -131,7 +131,7 @@ export default function ViewServicePage() {
                   >
                     Yes
                   </Button>
-                  <Button onClick={() => setIsOpen(false)}>No</Button>
+                  <Button onPress={() => setIsOpen(false)}>No</Button>
                 </div>
               </Form>
             </DialogFooter>

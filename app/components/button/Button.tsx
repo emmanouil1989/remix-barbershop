@@ -1,10 +1,12 @@
 import React from "react";
-import type { ButtonHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
+import type { ButtonProps as ReactAriaButtonProps } from "react-aria-components";
+import { Button as ReactAriaButton } from "react-aria-components";
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+export type ButtonProps = ReactAriaButtonProps &
+  React.RefAttributes<HTMLButtonElement>;
 export default function Button({
-  onClick,
+  onPress,
   children,
   className,
   ...props
@@ -13,8 +15,8 @@ export default function Button({
     `bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ${className}`,
   );
   return (
-    <button {...props} onClick={onClick} className={mergedClasses}>
+    <ReactAriaButton {...props} onPress={onPress} className={mergedClasses}>
       {children}
-    </button>
+    </ReactAriaButton>
   );
 }

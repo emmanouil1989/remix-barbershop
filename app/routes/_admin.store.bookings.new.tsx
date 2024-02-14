@@ -19,7 +19,7 @@ export default function NewBooking() {
         <p>Content</p>
       </div>
       <DialogFooter>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onPress={handleClose}>Cancel</Button>
       </DialogFooter>
     </Dialog>
   );

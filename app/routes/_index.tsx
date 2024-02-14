@@ -24,7 +24,7 @@ export default function Index() {
       </h1>
       <Link to="/store/services">Services</Link>
       <Form method="post">
-        <Button>Log Out</Button>
+        <Button type="submit">Log Out</Button>
       </Form>
     </>
   );

@@ -22,8 +22,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import { getDate } from "date-fns";
+import type { Key } from "react-aria-components";
 import Select from "~/components/Select";
-import type { SelectItemProps } from "@radix-ui/react-select";
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -146,7 +146,7 @@ function AppointmentScheduleHeader() {
       <div className="flex flex-row xl:w-[1200px] items-center justify-end gap-4 pb-4">
         <Select
           selectedValue={timeView}
-          onChange={(value: string) => {
+          onChange={(value: Key) => {
             if (isTypeViewType(value)) {
               searchParams.delete("tableView");
               const params =
@@ -156,10 +156,10 @@ function AppointmentScheduleHeader() {
               });
             }
           }}
-          options={selectOptions}
+          items={selectOptions}
         />
         <Button
-          onClick={() => {
+          onPress={() => {
             navigate(`/store/bookings/new?${searchParams.toString()}`);
           }}
         >
@@ -175,7 +175,7 @@ export const isTypeViewType = (value: unknown): value is TimeViewsType => {
   return value === "Month" || value === "Week";
 };
 
-const useSelectOptions = (): Array<SelectItemProps> => {
+const useSelectOptions = () => {
   return [
     { value: "Month", textValue: "Month View" },
     { value: "Week", textValue: "Week View" },

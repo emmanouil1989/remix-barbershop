@@ -1,77 +1,76 @@
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import React from "react";
-import * as RadixSelect from "@radix-ui/react-select";
+
+import type {
+  ListBoxItemProps,
+  SelectProps,
+  ValidationResult,
+  Key,
+} from "react-aria-components";
 import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@radix-ui/react-icons";
+  FieldError,
+  Label,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  Select,
+  SelectValue,
+  Text,
+} from "react-aria-components";
+import Button from "~/components/button/Button";
 
-export type SelectProps = {
-  selectedValue?: string;
-  placeholder?: string;
-  onChange: (value: string) => void;
-  options: Array<RadixSelect.SelectItemProps>;
+type SelectValue = {
+  value: string;
+  textValue: string;
 };
+type Props<T extends SelectValue> = {
+  label?: string;
+  description?: string;
+  errorMessage?: string | ((validation: ValidationResult) => string);
+  items?: Iterable<T>;
+  selectedValue?: Key;
+  onChange?: (value: Key) => void;
+} & Omit<SelectProps<T>, "children">;
 
-export default function Select({
+export default function ReactAriaSelect<T extends SelectValue>({
+  label,
+  description,
+  errorMessage,
+  items,
   selectedValue,
-  placeholder,
   onChange,
-  options,
-}: SelectProps) {
+  ...props
+}: Props<T>) {
   return (
-    <RadixSelect.Root value={selectedValue} onValueChange={onChange}>
-      <RadixSelect.Trigger
-        aria-label={selectedValue}
-        className="flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
-      >
-        <RadixSelect.Value placeholder={placeholder} />
-        <RadixSelect.Icon>
-          <ChevronDownIcon />
-        </RadixSelect.Icon>
-      </RadixSelect.Trigger>
-      <RadixSelect.Portal>
-        <RadixSelect.Content className=" w-full max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white">
-          <RadixSelect.ScrollUpButton>
-            <ChevronUpIcon />
-          </RadixSelect.ScrollUpButton>
-          <RadixSelect.Viewport>
-            <RadixSelect.Group>
-              {options.map(option => {
-                return (
-                  <SelectItem
-                    className="flex flex-row items-center gap-4 outline-none w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
-                    {...option}
-                    key={option.value}
-                    aria-label={option.textValue}
-                  >
-                    {option.textValue}
-                  </SelectItem>
-                );
-              })}
-            </RadixSelect.Group>
-          </RadixSelect.Viewport>
-          <RadixSelect.ScrollDownButton>
-            <ChevronDownIcon />
-          </RadixSelect.ScrollDownButton>
-        </RadixSelect.Content>
-      </RadixSelect.Portal>
-    </RadixSelect.Root>
+    <Select {...props} selectedKey={selectedValue} onSelectionChange={onChange}>
+      <Label>{label}</Label>
+      <Button className="flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white text-black">
+        <SelectValue />
+        <ChevronDownIcon />
+      </Button>
+      {description && <Text slot="description">{description}</Text>}
+      <FieldError>{errorMessage}</FieldError>
+      <Popover className=" max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white">
+        <ListBox items={items}>
+          {item => <SelectItem id={item.value}>{item.textValue}</SelectItem>}
+        </ListBox>
+      </Popover>
+    </Select>
   );
 }
 
-const SelectItem = React.forwardRef<
-  React.ElementRef<typeof RadixSelect.Item>,
-  React.ComponentPropsWithRef<typeof RadixSelect.Item>
->(({ children, ...props }, forwardedRef) => {
+function SelectItem({ children, ...props }: ListBoxItemProps) {
   return (
-    <RadixSelect.Item {...props} ref={forwardedRef}>
-      <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
-      <RadixSelect.ItemIndicator>
-        <CheckIcon />
-      </RadixSelect.ItemIndicator>
-    </RadixSelect.Item>
+    <ListBoxItem
+      {...props}
+      className="flex flex-row items-center gap-4 outline-none w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
+    >
+      {({ isSelected }) => (
+        <>
+          {children}
+          {isSelected && <CheckIcon />}
+        </>
+      )}
+    </ListBoxItem>
   );
-});
-
-SelectItem.displayName = "SelectItem";
+}
