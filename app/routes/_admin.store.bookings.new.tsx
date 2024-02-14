@@ -10,7 +10,6 @@ export default function NewBooking() {
     setIsOpen(false);
     navigate(-1);
   };
-  console.log("here");
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>

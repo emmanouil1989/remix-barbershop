@@ -12,7 +12,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const mergedClasses = twMerge(
-    `bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded ${className}`,
+    `bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded outline-none ${className}`,
   );
   return (
     <ReactAriaButton {...props} onPress={onPress} className={mergedClasses}>

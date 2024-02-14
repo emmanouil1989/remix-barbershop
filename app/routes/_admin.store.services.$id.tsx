@@ -108,10 +108,15 @@ export default function ViewServicePage() {
             {isUpdating ? "Updating your service..." : "Update Service"}
           </Button>
           <Dialog
+            role="alertdialog"
             open={isOpen}
             onOpenChange={() => setIsOpen(!isOpen)}
             triggerButton={
-              <Button value="delete" className="bg-red-600 hover:bg-red-700">
+              <Button
+                value="delete"
+                onPress={() => setIsOpen(!isOpen)}
+                className="bg-red-600 hover:bg-red-700"
+              >
                 Delete Service
               </Button>
             }
@@ -131,7 +136,14 @@ export default function ViewServicePage() {
                   >
                     Yes
                   </Button>
-                  <Button onPress={() => setIsOpen(false)}>No</Button>
+                  <Button
+                    onPress={() => {
+                      console.log({ isOpen });
+                      setIsOpen(false);
+                    }}
+                  >
+                    No
+                  </Button>
                 </div>
               </Form>
             </DialogFooter>
