@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import { useNavigate } from "@remix-run/react";
 import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
 import Button from "~/components/button/Button";
+import DatePicker from "~/components/DatePicker";
+import { withZod } from "@remix-validated-form/with-zod";
+import zod from "zod";
+import { ValidatedForm } from "remix-validated-form";
+
+const validator = withZod(
+  zod.object({
+    name: zod.string().min(1, { message: "Name is required" }),
+    price: zod
+      .string()
+      .min(1, { message: "Price is required" })
+      .max(11, { message: "Price is too long" })
+      .regex(/^[0-9]*(\.[0-9]{0,2})?$/, {
+        message: "Price must be in the format of 0.00",
+      }),
+  }),
+);
 
 export default function NewBooking() {
   const navigate = useNavigate();
@@ -10,16 +27,23 @@ export default function NewBooking() {
     setIsOpen(false);
     navigate(-1);
   };
-
+  //TODO imporve form
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>
       <DialogHeader title="New Booking" />
-      <div>
-        <p>Content</p>
-      </div>
-      <DialogFooter>
-        <Button onPress={handleClose}>Cancel</Button>
-      </DialogFooter>
+      <ValidatedForm
+        validator={validator}
+        method="post"
+        className="flex flex-col gap-4 w-full h-full"
+      >
+        <div>
+          <p>Content</p>
+          <DatePicker label="Date" name="date" />
+        </div>
+        <DialogFooter>
+          <Button onPress={handleClose}>Cancel</Button>
+        </DialogFooter>
+      </ValidatedForm>
     </Dialog>
   );
 }
