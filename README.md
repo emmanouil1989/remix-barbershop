@@ -7,5 +7,6 @@
 - SESSION_SECRET set on .env
 - ENCRYPTION_KEY set on .env
 - Run `npm install`
+- Run `npx prisma db push` to create the schema in DB
 - Run `npm run seed` to add mock data to database
 - Admin mock email `admin@gmail.com` and password`password1`
