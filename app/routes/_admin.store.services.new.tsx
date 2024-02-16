@@ -1,13 +1,13 @@
 import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { Input } from "~/components/Form/Input/Input";
 import { SubmitButton } from "~/components/Form/SubmitButton/SubmitButton";
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
 import React from "react";
+import Input from "~/components/Form/Input";
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();

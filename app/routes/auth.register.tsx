@@ -2,7 +2,6 @@ import React from "react";
 import { withZod } from "@remix-validated-form/with-zod";
 import z from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { Input } from "~/components/Form/Input/Input";
 import { SubmitButton } from "~/components/Form/SubmitButton/SubmitButton";
 import type { ActionArgs, LoaderArgs, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -12,6 +11,7 @@ import { getDomainUrl } from "~/services/misc.server";
 import { Link, useActionData } from "@remix-run/react";
 import type { User } from "@prisma/client";
 import { useSendNotification } from "~/utils/notification";
+import Input from "~/components/Form/Input";
 const validator = withZod(
   z
     .object({

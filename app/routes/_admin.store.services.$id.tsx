@@ -7,10 +7,10 @@ import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { Input } from "~/components/Form/Input/Input";
 import Toggle from "~/components/toggle/Toggle";
 import Button from "~/components/button/Button";
 import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
+import Input from "~/components/Form/Input";
 
 const Validator = withZod(
   zod.object({

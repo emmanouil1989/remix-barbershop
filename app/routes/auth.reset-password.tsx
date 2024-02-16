@@ -1,5 +1,4 @@
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { Input } from "~/components/Form/Input/Input";
 import { Link, useLoaderData } from "@remix-run/react";
 import { SubmitButton } from "~/components/Form/SubmitButton/SubmitButton";
 import React from "react";
@@ -15,6 +14,7 @@ import {
 import { compareAsc } from "date-fns";
 import { getUserById, updateUserPassword } from "~/services/user.server";
 import { getDomainUrl } from "~/services/misc.server";
+import Input from "~/components/Form/Input";
 
 const validator = withZod(
   z

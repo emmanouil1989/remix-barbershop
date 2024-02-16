@@ -7,9 +7,9 @@ import { sessionStorage } from "~/services/session.server";
 import { withZod } from "@remix-validated-form/with-zod";
 import z from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
-import { Input } from "~/components/Form/Input/Input";
 import { SubmitButton } from "~/components/Form/SubmitButton/SubmitButton";
 import { useSendNotification } from "~/utils/notification";
+import Input from "~/components/Form/Input";
 
 export const validator = withZod(
   z.object({

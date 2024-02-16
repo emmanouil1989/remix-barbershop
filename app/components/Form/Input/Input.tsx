@@ -8,17 +8,17 @@ import {
 } from "react-aria-components";
 
 type MyInputProps = {
-  label: string;
-  name: string;
+  label?: string;
+  name?: string;
 };
 
 type Props = MyInputProps & Omit<InputHTMLAttributes<HTMLInputElement>, "name">;
 
-export const Input = ({ name, label, type, className, ...rest }: Props) => {
-  const { error, getInputProps } = useField(name);
+const Input = ({ name, label, type, className, ...rest }: Props) => {
+  const { error, getInputProps } = useField(name || "input");
   return (
     <TextField className={className}>
-      <Label htmlFor={name}>{label}</Label>
+      {label && <Label htmlFor={name}>{label}</Label>}
       <ReactAriaInput
         {...getInputProps({ id: name, type, ...rest })}
         className="w-full"
@@ -27,3 +27,4 @@ export const Input = ({ name, label, type, className, ...rest }: Props) => {
     </TextField>
   );
 };
+export default Input;
