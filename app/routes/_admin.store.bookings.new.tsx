@@ -1,11 +1,24 @@
 import React, { useState } from "react";
-import { useNavigate } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
 import Button from "~/components/button/Button";
 import DatePicker from "~/components/DatePicker";
 import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { ValidatedForm } from "remix-validated-form";
+import { prisma } from "~/db.server";
+import { json } from "@remix-run/node";
+
+export async function loader() {
+  const allStoreServices = await prisma.storeServices.findMany({
+    select: {
+      id: true,
+      name: true,
+      price: true,
+    },
+  });
+  return json({ services: allStoreServices });
+}
 
 const validator = withZod(
   zod.object({
@@ -23,6 +36,8 @@ const validator = withZod(
 export default function NewBooking() {
   const navigate = useNavigate();
   let [isOpen, setIsOpen] = useState(true);
+
+  const { services } = useLoaderData<typeof loader>();
   const handleClose = () => {
     setIsOpen(false);
     navigate(-1);
