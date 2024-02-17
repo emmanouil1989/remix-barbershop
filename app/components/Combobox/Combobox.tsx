@@ -50,7 +50,7 @@ export default function ComboBox<T extends ComboBoxValue>({
           name={name}
           value={inputValue}
           onChange={e => onInputChange && onInputChange(e.target.value)}
-          className="flex-1 w-full border-none py-2 px-2 leading-5 text-gray-900 bg-transparent outline-none text-base"
+          className="flex-1  border-none py-2 px-2 leading-5 text-gray-900 bg-transparent outline-none text-base"
         />
 
         <Button className="flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white text-black">
@@ -60,7 +60,8 @@ export default function ComboBox<T extends ComboBoxValue>({
 
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
-      <Popover className=" max-h-[400px] overflow-x-hidden overflow-y-auto border-solid border border-gray-600 absolute z-10 bg-white">
+      <Popover className="max-h-60 w-[--trigger-width] overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out">
+        {" "}
         <ListBox items={items}>
           {item => (
             <ComboboxItem id={item.value} key={item.value}>
