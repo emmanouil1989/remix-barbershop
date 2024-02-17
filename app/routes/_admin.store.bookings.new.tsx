@@ -8,11 +8,11 @@ import zod from "zod";
 import { ValidatedForm } from "remix-validated-form";
 import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
-import ComboBox, { ComboboxItem } from "~/components/Combobox/Combobox";
+import { ComboBox, ComboboxItem } from "~/components/Combobox/Combobox";
 import type { UserListData } from "./_admin.api.people.search";
 
 export async function loader() {
-  const allStoreServicesPromise = prisma.storeServices.findMany({
+  const allServices = await prisma.storeServices.findMany({
     select: {
       id: true,
       name: true,
@@ -20,14 +20,7 @@ export async function loader() {
     },
   });
 
-  const usersPromise = prisma.user.findMany({
-    take: 10,
-  });
-  const [allServices, tenUsers] = await Promise.all([
-    allStoreServicesPromise,
-    usersPromise,
-  ]);
-  return json({ services: allServices, users: tenUsers });
+  return json({ services: allServices });
 }
 
 const validator = withZod(
@@ -47,7 +40,7 @@ export default function NewBooking() {
   const navigate = useNavigate();
   let [isOpen, setIsOpen] = useState(true);
 
-  const { services, users } = useLoaderData<typeof loader>();
+  const { services } = useLoaderData<typeof loader>();
   const [peopleQuery, setPeopleQuery] = useState("");
   const { data, load } = useFetcher<UserListData>();
   const people = data?.users ?? [];
@@ -66,10 +59,7 @@ export default function NewBooking() {
     value: person.id,
     textValue: person.firstName,
   }));
-  const tenUsers = users.map(user => ({
-    value: user.id,
-    textValue: user.firstName,
-  }));
+
   //TODO imporve form
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>
@@ -83,7 +73,7 @@ export default function NewBooking() {
           <ComboBox
             label="Service"
             name="service"
-            items={peopleList.length > 0 ? peopleList : tenUsers}
+            items={peopleList}
             inputValue={peopleQuery}
             onInputChange={setPeopleQuery}
           >

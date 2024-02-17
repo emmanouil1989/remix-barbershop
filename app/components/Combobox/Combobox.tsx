@@ -30,7 +30,7 @@ interface MyComboBoxProps<T extends ComboBoxValue>
   children: React.ReactNode | ((item: T) => React.ReactNode);
 }
 
-export default function ComboBox<T extends ComboBoxValue>({
+export function ComboBox<T extends ComboBoxValue>({
   label,
   description,
   errorMessage,

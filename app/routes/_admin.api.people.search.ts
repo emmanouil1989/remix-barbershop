@@ -11,9 +11,12 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   let url = new URL(request.url);
   let term = url.searchParams.get("term");
   if (!term) {
-    return json({ users: [] });
+    const tenUsers = await prisma.user.findMany({
+      take: 10,
+    });
+    return json({ users: tenUsers });
   }
-  let users = await prisma.user.findMany({
+  const users = await prisma.user.findMany({
     where: {
       firstName: {
         contains: term,
