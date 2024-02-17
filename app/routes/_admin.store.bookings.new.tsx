@@ -8,6 +8,7 @@ import zod from "zod";
 import { ValidatedForm } from "remix-validated-form";
 import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
+import ComboBox from "~/components/Combobox/Combobox";
 
 export async function loader() {
   const allStoreServices = await prisma.storeServices.findMany({
@@ -42,6 +43,10 @@ export default function NewBooking() {
     setIsOpen(false);
     navigate(-1);
   };
+  const items = services.map(service => ({
+    value: service.id,
+    textValue: service.name,
+  }));
   //TODO imporve form
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>
@@ -52,7 +57,13 @@ export default function NewBooking() {
         className="flex flex-col gap-4 w-full h-full"
       >
         <div>
-          <p>Content</p>
+          <ComboBox
+            label="Service"
+            name="service"
+            defaultItems={items}
+            formValue="text"
+            allowsCustomValue
+          />
           <DatePicker label="Date" name="date" />
         </div>
         <DialogFooter>
