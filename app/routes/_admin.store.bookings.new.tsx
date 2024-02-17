@@ -10,6 +10,7 @@ import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
 import { ComboBox, ComboboxItem } from "~/components/Combobox/Combobox";
 import type { UserListData } from "./_admin.api.people.search";
+import Select from "~/components/Select";
 
 export async function loader() {
   const allServices = await prisma.storeServices.findMany({
@@ -60,7 +61,6 @@ export default function NewBooking() {
     textValue: person.firstName,
   }));
 
-  //TODO imporve form
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>
       <DialogHeader title="New Booking" />
@@ -71,8 +71,8 @@ export default function NewBooking() {
       >
         <div>
           <ComboBox
-            label="Service"
-            name="service"
+            label="First Name"
+            name="fistName"
             items={peopleList}
             inputValue={peopleQuery}
             onInputChange={setPeopleQuery}
@@ -84,6 +84,15 @@ export default function NewBooking() {
             )}
           </ComboBox>
           <DatePicker label="Date" name="date" />
+          <Select
+            className="w-full"
+            name="services"
+            label="Service"
+            items={services.map(service => ({
+              value: service.id,
+              textValue: service.name,
+            }))}
+          />
         </div>
         <DialogFooter>
           <Button onPress={handleClose}>Cancel</Button>

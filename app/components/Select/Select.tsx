@@ -44,7 +44,7 @@ export default function ReactAriaSelect<T extends SelectValue>({
   return (
     <Select {...props} selectedKey={selectedValue} onSelectionChange={onChange}>
       <Label>{label}</Label>
-      <Button className="flex flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white text-black">
+      <Button className="flex w-full flex-row gap-4  font-bold py-2 px-4 rounded items-center justify-between outline-none cursor-pointer max-w-[400px] shadow-sm bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white text-black">
         <SelectValue />
         <ChevronDownIcon />
       </Button>
