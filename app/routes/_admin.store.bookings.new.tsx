@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import React, { useEffect, useState } from "react";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
 import Button from "~/components/button/Button";
 import DatePicker from "~/components/DatePicker";
@@ -8,17 +8,26 @@ import zod from "zod";
 import { ValidatedForm } from "remix-validated-form";
 import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
-import ComboBox from "~/components/Combobox/Combobox";
+import ComboBox, { ComboboxItem } from "~/components/Combobox/Combobox";
+import type { UserListData } from "./_admin.api.people.search";
 
 export async function loader() {
-  const allStoreServices = await prisma.storeServices.findMany({
+  const allStoreServicesPromise = prisma.storeServices.findMany({
     select: {
       id: true,
       name: true,
       price: true,
     },
   });
-  return json({ services: allStoreServices });
+
+  const usersPromise = prisma.user.findMany({
+    take: 10,
+  });
+  const [allServices, tenUsers] = await Promise.all([
+    allStoreServicesPromise,
+    usersPromise,
+  ]);
+  return json({ services: allServices, users: tenUsers });
 }
 
 const validator = withZod(
@@ -38,14 +47,28 @@ export default function NewBooking() {
   const navigate = useNavigate();
   let [isOpen, setIsOpen] = useState(true);
 
-  const { services } = useLoaderData<typeof loader>();
+  const { services, users } = useLoaderData<typeof loader>();
+  const [peopleQuery, setPeopleQuery] = useState("");
+  const { data, load } = useFetcher<UserListData>();
+  const people = data?.users ?? [];
+  useEffect(
+    function getFilteredPeople() {
+      load(`/api/people/search?term=${peopleQuery}`);
+    },
+    [load, peopleQuery],
+  );
+
   const handleClose = () => {
     setIsOpen(false);
     navigate(-1);
   };
-  const items = services.map(service => ({
-    value: service.id,
-    textValue: service.name,
+  const peopleList = people.map(person => ({
+    value: person.id,
+    textValue: person.firstName,
+  }));
+  const tenUsers = users.map(user => ({
+    value: user.id,
+    textValue: user.firstName,
   }));
   //TODO imporve form
   return (
@@ -60,10 +83,16 @@ export default function NewBooking() {
           <ComboBox
             label="Service"
             name="service"
-            defaultItems={items}
-            formValue="text"
-            allowsCustomValue
-          />
+            items={peopleList.length > 0 ? peopleList : tenUsers}
+            inputValue={peopleQuery}
+            onInputChange={setPeopleQuery}
+          >
+            {item => (
+              <ComboboxItem key={item.value} id={item.value}>
+                {item.textValue}
+              </ComboboxItem>
+            )}
+          </ComboBox>
           <DatePicker label="Date" name="date" />
         </div>
         <DialogFooter>
