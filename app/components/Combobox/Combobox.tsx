@@ -61,7 +61,6 @@ export default function ComboBox<T extends ComboBoxValue>({
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
       <Popover className="max-h-60 w-[--trigger-width] overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out">
-        {" "}
         <ListBox items={items}>
           {item => (
             <ComboboxItem id={item.value} key={item.value}>
