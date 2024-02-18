@@ -79,7 +79,7 @@ export default function DatePicker<T extends DateValue>({
         }
       `}
       >
-        <Dialog className="p-6 text-gray-600">
+        <Dialog className="p-6 w-max h-max text-gray-600">
           <Calendar>
             <header className="flex items-center gap-1 pb-4 px-1 font-serif w-full">
               <Heading className="flex-1 font-semibold text-2xl ml-2" />
@@ -100,7 +100,7 @@ export default function DatePicker<T extends DateValue>({
               {date => (
                 <CalendarCell
                   date={date}
-                  className="w-9 h-9 outline-none cursor-default rounded-full flex items-center justify-center outside-month:text-gray-300 hover:bg-gray-100 pressed:bg-gray-200 selected:bg-violet-700 selected:text-white focus-visible:ring ring-violet-600/70 ring-offset-2"
+                  className="w-9 h-9 outline-none cursor-default rounded-full flex items-center justify-center outside-month:text-gray-300 hover:bg-gray-100 pressed:bg-gray-200 selected:bg-gray-500 selected:text-white focus-visible:ring ring-violet-600/70 ring-offset-2"
                 />
               )}
             </CalendarGrid>

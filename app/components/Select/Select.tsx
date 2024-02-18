@@ -63,7 +63,7 @@ function SelectItem({ children, ...props }: ListBoxItemProps) {
   return (
     <ListBoxItem
       {...props}
-      className="flex flex-row items-center gap-4 outline-none w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
+      className="flex flex-row items-center justify-between gap-4 outline-none w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 dark:hover:text-white border-b border-solid border-gray-600 last:border-b-0"
     >
       {({ isSelected }) => (
         <>
