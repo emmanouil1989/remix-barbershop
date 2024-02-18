@@ -58,7 +58,7 @@ export default function NewBooking() {
   };
   const peopleList = people.map(person => ({
     value: person.id,
-    textValue: person.firstName,
+    textValue: `${person.firstName} ${person.lastName}`,
   }));
 
   return (

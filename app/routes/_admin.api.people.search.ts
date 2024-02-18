@@ -11,10 +11,10 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   let url = new URL(request.url);
   let term = url.searchParams.get("term");
   if (!term) {
-    const tenUsers = await prisma.user.findMany({
-      take: 10,
+    const fiveUsers = await prisma.user.findMany({
+      take: 5,
     });
-    return json({ users: tenUsers });
+    return json({ users: fiveUsers });
   }
   const users = await prisma.user.findMany({
     where: {

@@ -85,13 +85,13 @@ export default function DatePicker<T extends DateValue>({
               <Heading className="flex-1 font-semibold text-2xl ml-2" />
               <Button
                 slot="previous"
-                className="w-9 h-9 outline-none cursor-default bg-transparent text-gray-600 border-0 rounded-full flex items-center justify-center hover:bg-gray-100 pressed:bg-gray-200 focus-visible:ring ring-violet-600/70 ring-offset-2"
+                className="w-9 h-9 w-max outline-none cursor-default bg-transparent text-gray-600 border-0 rounded-full flex items-center justify-center hover:bg-gray-100 pressed:bg-gray-200 focus-visible:ring ring-violet-600/70 ring-offset-2"
               >
                 <ChevronLeftIcon />
               </Button>
               <Button
                 slot="next"
-                className="w-9 h-9 outline-none cursor-default bg-transparent text-gray-600 border-0 rounded-full flex items-center justify-center hover:bg-gray-100 pressed:bg-gray-200 focus-visible:ring ring-violet-600/70 ring-offset-2"
+                className="w-9 h-9 w-max outline-none cursor-default bg-transparent text-gray-600 border-0 rounded-full flex items-center justify-center hover:bg-gray-100 pressed:bg-gray-200 focus-visible:ring ring-violet-600/70 ring-offset-2"
               >
                 <ChevronRightIcon />
               </Button>
