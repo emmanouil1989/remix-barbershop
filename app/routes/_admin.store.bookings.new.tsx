@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import React, { useState } from "react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import Dialog, { DialogFooter, DialogHeader } from "~/components/Dialog";
 import Button from "~/components/button/Button";
 import DatePicker from "~/components/DatePicker";
@@ -9,11 +9,11 @@ import { ValidatedForm } from "remix-validated-form";
 import { prisma } from "~/db.server";
 import { json } from "@remix-run/node";
 import { ComboBox, ComboboxItem } from "~/components/Combobox/Combobox";
-import type { UserListData } from "./_admin.api.people.search";
 import Select from "~/components/Select";
+import TimeField from "~/components/TimeField";
 
 export async function loader() {
-  const allServices = await prisma.storeServices.findMany({
+  const allServicesPromise = prisma.storeServices.findMany({
     select: {
       id: true,
       name: true,
@@ -21,7 +21,13 @@ export async function loader() {
     },
   });
 
-  return json({ services: allServices });
+  const allUsersPromise = prisma.user.findMany({});
+  const [allServices, allUsers] = await Promise.all([
+    allServicesPromise,
+    allUsersPromise,
+  ]);
+
+  return json({ services: allServices, users: allUsers });
 }
 
 const validator = withZod(
@@ -41,25 +47,17 @@ export default function NewBooking() {
   const navigate = useNavigate();
   let [isOpen, setIsOpen] = useState(true);
 
-  const { services } = useLoaderData<typeof loader>();
-  const [peopleQuery, setPeopleQuery] = useState("");
-  const { data, load } = useFetcher<UserListData>();
-  const people = data?.users ?? [];
-  useEffect(
-    function getFilteredPeople() {
-      load(`/api/people/search?term=${peopleQuery}`);
-    },
-    [load, peopleQuery],
-  );
+  const { services, users } = useLoaderData<typeof loader>();
+
+  const peopleList = users.map(user => ({
+    value: user.id,
+    textValue: `${user.firstName} ${user.lastName}`,
+  }));
 
   const handleClose = () => {
     setIsOpen(false);
     navigate(-1);
   };
-  const peopleList = people.map(person => ({
-    value: person.id,
-    textValue: `${person.firstName} ${person.lastName}`,
-  }));
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen}>
@@ -73,17 +71,14 @@ export default function NewBooking() {
           <ComboBox
             label="First Name"
             name="fistName"
-            items={peopleList}
-            inputValue={peopleQuery}
-            onInputChange={setPeopleQuery}
+            defaultItems={peopleList}
           >
             {item => (
-              <ComboboxItem key={item.value} id={item.value}>
-                {item.textValue}
-              </ComboboxItem>
+              <ComboboxItem id={item.value}>{item.textValue}</ComboboxItem>
             )}
           </ComboBox>
           <DatePicker label="Date" name="date" />
+          <TimeField label="Time" name="time" />
           <Select
             className="w-full"
             name="services"

@@ -53,7 +53,7 @@ export default function DatePicker<T extends DateValue>({
           {segment => (
             <DateSegment
               segment={segment}
-              className="px-0.5 tabular-nums outline-none rounded-sm focus:bg-violet-700 focus:text-white caret-transparent placeholder-shown:italic"
+              className="px-0.5 tabular-nums outline-none rounded-sm focus:bg-gray-600 focus:text-white caret-transparent placeholder-shown:italic"
             />
           )}
         </DateInput>
@@ -66,7 +66,7 @@ export default function DatePicker<T extends DateValue>({
       <FieldError className="text-red-600 text-base">{errorMessage}</FieldError>
       <Popover
         className={({ isEntering, isExiting }) => `
-        overflow-auto rounded-lg drop-shadow-lg ring-1 ring-black/10 bg-white p-x-8
+        overflow-auto rounded-lg drop-shadow-lg ring-1 ring-black/10 bg-white 
         ${
           isEntering
             ? "animate-in fade-in placement-bottom:slide-in-from-top-1 placement-top:slide-in-from-bottom-1 ease-out duration-200"
