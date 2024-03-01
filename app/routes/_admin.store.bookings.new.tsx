@@ -20,6 +20,7 @@ import TimeField from "~/components/TimeField";
 import type { Key } from "react-aria-components";
 import { Form } from "react-aria-components";
 import Input from "~/components/Form/Input";
+import { addMinutes } from "date-fns";
 
 export async function loader() {
   const allServicesPromise = prisma.storeServices.findMany({
@@ -30,7 +31,11 @@ export async function loader() {
     },
   });
 
-  const allUsersPromise = prisma.user.findMany({});
+  const allUsersPromise = prisma.user.findMany({
+    where: {
+      role: "USER",
+    },
+  });
   const [allServices, allUsers] = await Promise.all([
     allServicesPromise,
     allUsersPromise,
@@ -43,6 +48,38 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const fieldValues = await validator.validate(formData);
   if (fieldValues.error) return validationError(fieldValues.error);
+
+  const { firstName, date, time, service } = fieldValues.data;
+  console.log({ firstName, date, time, service });
+  const store = await prisma.store.findFirst({});
+  console.log({ store });
+  if (!store) return json({ error: "Store not found" }, { status: 400 });
+
+  await prisma.booking.create({
+    data: {
+      start: new Date(`${date}T${time}`),
+      end: addMinutes(new Date(`${date}T${time}`), 30),
+      user: {
+        connect: {
+          id: firstName,
+        },
+      },
+      services: {
+        create: {
+          storeService: {
+            connect: {
+              id: service,
+            },
+          },
+        },
+      },
+      store: {
+        connect: {
+          id: store.id,
+        },
+      },
+    },
+  });
 
   return redirect("/store/bookings");
 }
@@ -98,8 +135,6 @@ export default function NewBooking() {
           name="firstName"
           defaultItems={peopleList}
           className="flex flex-col gap-1 outline-none w-full"
-          formValue="text"
-          allowsCustomValue
           isRequired
           errorMessage="Name is required"
         >
