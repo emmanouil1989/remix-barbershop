@@ -138,7 +138,6 @@ export default function ViewServicePage() {
                   </Button>
                   <Button
                     onPress={() => {
-                      console.log({ isOpen });
                       setIsOpen(false);
                     }}
                   >

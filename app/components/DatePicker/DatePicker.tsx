@@ -37,7 +37,6 @@ interface MyDatePickerProps<T extends DateValue> extends DatePickerProps<T> {
 
 export default function DatePicker<T extends DateValue>({
   label,
-  name,
   description,
   errorMessage,
   ...props
@@ -47,7 +46,7 @@ export default function DatePicker<T extends DateValue>({
       {...props}
       className="group flex flex-col gap-1 w-full"
     >
-      <Label htmlFor={name}>{label}</Label>
+      <Label>{label}</Label>
       <Group className="flex rounded-lg bg-white/90 focus-within:bg-white group-open:bg-white transition pl-3 shadow-md text-gray-700 focus-visible:ring-2 ring-black">
         <DateInput className="flex flex-1 py-2">
           {segment => (
@@ -63,7 +62,9 @@ export default function DatePicker<T extends DateValue>({
         </Button>
       </Group>
       {description && <Text slot="description">{description}</Text>}
-      <FieldError className="text-red-600 text-base">{errorMessage}</FieldError>
+      <FieldError className="text-red-600 text-base text-nowrap">
+        {errorMessage}
+      </FieldError>
       <Popover
         className={({ isEntering, isExiting }) => `
         overflow-auto rounded-lg drop-shadow-lg ring-1 ring-black/10 bg-white 

@@ -16,9 +16,10 @@ type Props = SubmitButtonProps &
 export const SubmitButton = ({
   submittingText,
   submitText,
+  form,
   ...props
 }: Props) => {
-  const isSubmitting = useIsSubmitting();
+  const isSubmitting = useIsSubmitting(form);
   const { isValid } = useFormContext();
   const disabled = isSubmitting || !isValid;
   return (

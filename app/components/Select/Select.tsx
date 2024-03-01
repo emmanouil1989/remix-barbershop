@@ -29,6 +29,7 @@ type Props<T extends SelectValue> = {
   errorMessage?: string | ((validation: ValidationResult) => string);
   items?: Iterable<T>;
   selectedValue?: Key;
+  formId?: string;
   onChange?: (value: Key) => void;
 } & Omit<SelectProps<T>, "children">;
 
@@ -49,7 +50,9 @@ export default function ReactAriaSelect<T extends SelectValue>({
         <ChevronDownIcon />
       </Button>
       {description && <Text slot="description">{description}</Text>}
-      <FieldError>{errorMessage}</FieldError>
+      <FieldError className="text-red-600 text-base text-nowrap">
+        {errorMessage}
+      </FieldError>
       <Popover className="max-h-60 w-[--trigger-width] overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out outline-none">
         <ListBox items={items} className="outline-none">
           {item => <SelectItem id={item.value}>{item.textValue}</SelectItem>}

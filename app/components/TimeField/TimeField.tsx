@@ -27,9 +27,9 @@ export default function TimeField<T extends TimeValue>({
   ...props
 }: MyTimeFieldProps<T>) {
   return (
-    <ReactAriaTimeField {...props} className="flex flex-col gap-2">
+    <ReactAriaTimeField {...props} className="flex flex-col gap-1">
       <Label>{label}</Label>
-      <DateInput className="flex flex-row gap-2">
+      <DateInput className="flex flex-row gap-2 h-full items-center">
         {segment => (
           <DateSegment
             segment={segment}
@@ -38,7 +38,9 @@ export default function TimeField<T extends TimeValue>({
         )}
       </DateInput>
       {description && <Text slot="description">{description}</Text>}
-      <FieldError>{errorMessage}</FieldError>
+      <FieldError className="text-red-600 text-base text-nowrap">
+        {errorMessage}
+      </FieldError>
     </ReactAriaTimeField>
   );
 }
