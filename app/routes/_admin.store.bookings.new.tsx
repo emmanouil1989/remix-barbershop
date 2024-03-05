@@ -52,7 +52,6 @@ export async function action({ request }: ActionArgs) {
   const { firstName, date, time, service } = fieldValues.data;
   console.log({ firstName, date, time, service });
   const store = await prisma.store.findFirst({});
-  console.log({ store });
   if (!store) return json({ error: "Store not found" }, { status: 400 });
 
   await prisma.booking.create({

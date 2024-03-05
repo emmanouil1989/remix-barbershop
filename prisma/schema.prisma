@@ -89,7 +89,6 @@ model Service {
   id             String        @id @default(uuid())
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
-  duration       Int?
   storeService   StoreServices @relation(fields: [storeServiceId], references: [id], onDelete: Cascade)
   storeServiceId String
   booking        Booking?      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
