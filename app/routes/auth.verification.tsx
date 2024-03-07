@@ -1,5 +1,9 @@
 import React from "react";
-import type { LoaderArgs, MetaFunction, SerializeFrom } from "@remix-run/node";
+import type {
+  LoaderFunctionArgs,
+  MetaFunction,
+  SerializeFrom,
+} from "@remix-run/node";
 import {
   authenticator,
   getVerificationToken,
@@ -10,7 +14,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { compareAsc } from "date-fns";
 import { getDomainUrl } from "~/services/misc.server";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
     successRedirect: `/`,
   });
@@ -38,7 +42,7 @@ export async function loader({ request }: LoaderArgs) {
 const isErrorType = (data: any): data is SerializeFrom<{ error: string }> => {
   return data && data.error !== undefined;
 };
-export const meta: MetaFunction = () => ({ title: "Verify Email" });
+export const meta: MetaFunction = () => [{ title: "Verify Email" }];
 export default function Verification() {
   const loaderData = useLoaderData<typeof loader>();
   if (isErrorType(loaderData)) {

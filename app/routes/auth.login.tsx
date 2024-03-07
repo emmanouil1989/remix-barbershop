@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useSearchParams, useLoaderData } from "@remix-run/react";
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { authenticator, login } from "~/services/auth.server";
 import { sessionStorage } from "~/services/session.server";
@@ -24,7 +24,7 @@ export const validator = withZod(
       .min(8, { message: "Bust be at least 8 characters" }),
   }),
 );
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const fieldValues = await validator.validate(await request.formData());
   if (fieldValues.error) return validationError(fieldValues.error);
   const redirectTo = fieldValues.submittedData.redirectTo || "/";
@@ -52,7 +52,7 @@ export async function action({ request }: ActionArgs) {
   return redirect(redirectTo, { headers });
 }
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });

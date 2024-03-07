@@ -10,7 +10,7 @@ import {
 import type { HourBooking } from "~/components/ Scheduler/Scheduler";
 import Scheduler from "~/components/ Scheduler/Scheduler";
 import { prisma } from "~/db.server";
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Booking } from "@prisma/client";
 import {
@@ -24,7 +24,7 @@ import type { Key } from "react-aria-components";
 import Select from "~/components/Select";
 import { useSendNotification } from "~/utils/notification";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const year = url.searchParams.get("year");
   const month = url.searchParams.get("month");

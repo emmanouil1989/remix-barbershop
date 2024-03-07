@@ -1,4 +1,8 @@
-import type { ActionArgs, LoaderArgs, SerializeFrom } from "@remix-run/node";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  SerializeFrom,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { authenticator, createVerificationToken } from "~/services/auth.server";
 import { ValidatedForm, validationError } from "remix-validated-form";
@@ -22,14 +26,14 @@ const validator = withZod(
       .email("Must be a valid email"),
   }),
 );
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });
   return json({ success: true });
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const fieldValues = await validator.validate(await request.formData());
   if (fieldValues.error) return validationError(fieldValues.error);
   const { email } = fieldValues.data;

@@ -1,12 +1,12 @@
 import React from "react";
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { authenticator } from "~/services/auth.server";
 import { getUserById } from "~/services/user.server";
 import invariant from "tiny-invariant";
 import { Link, Outlet } from "@remix-run/react";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await authenticator.isAuthenticated(request, {
     failureRedirect: "/auth/login",
   });

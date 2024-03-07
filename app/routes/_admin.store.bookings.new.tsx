@@ -12,7 +12,7 @@ import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { validationError } from "remix-validated-form";
 import { prisma } from "~/db.server";
-import type { ActionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { ComboBox, ComboboxItem } from "~/components/Combobox/Combobox";
 import Select from "~/components/Select";
@@ -44,7 +44,7 @@ export async function loader() {
   return json({ services: allServices, users: allUsers });
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const fieldValues = await validator.validate(formData);
   if (fieldValues.error) return validationError(fieldValues.error);
@@ -94,7 +94,7 @@ const validator = withZod(
 export default function NewBooking() {
   const navigate = useNavigate();
   const { services, users } = useLoaderData<typeof loader>();
-  const data = useActionData();
+  const data = useActionData<typeof action>();
 
   const [isOpen, setIsOpen] = useState(true);
   const [selectedValue, setSelectedValue] = useState<Key | undefined>(

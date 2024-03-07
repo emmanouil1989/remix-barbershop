@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
-import { Form, useLoaderData, useTransition } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { withZod } from "@remix-validated-form/with-zod";
 import zod from "zod";
 import { ValidatedForm, validationError } from "remix-validated-form";
@@ -28,7 +28,7 @@ const Validator = withZod(
   }),
 );
 
-export async function action({ request, params }: ActionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   const serviceId = params.id;
   invariant(serviceId, "Service ID is required");
   const formData = await request.formData();
@@ -55,7 +55,7 @@ export async function action({ request, params }: ActionArgs) {
   return redirect(`/store/services/${serviceId}`);
 }
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   const serviceId = params.id;
   invariant(serviceId, "serviceId is required");
   const service = await prisma.storeServices.findUnique({
@@ -70,9 +70,9 @@ export async function loader({ params }: LoaderArgs) {
 export default function ViewServicePage() {
   const { service } = useLoaderData<typeof loader>();
   const [isOpen, setIsOpen] = React.useState(false);
-  const transition = useTransition();
-  const isUpdating = transition.submission?.formData.get("intent") === "update";
-  const isDeleting = transition.submission?.formData.get("intent") === "delete";
+  const transition = useNavigation();
+  const isUpdating = transition.formData?.get("intent") === "update";
+  const isDeleting = transition.formData?.get("intent") === "delete";
   useEffect(() => {
     if (isDeleting) {
       setIsOpen(false);

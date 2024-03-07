@@ -4,7 +4,11 @@ import { SubmitButton } from "~/components/Form/SubmitButton/SubmitButton";
 import React from "react";
 import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
-import type { ActionArgs, LoaderArgs, SerializeFrom } from "@remix-run/node";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  SerializeFrom,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   authenticator,
@@ -33,7 +37,7 @@ const validator = withZod(
     }),
 );
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });
@@ -66,7 +70,7 @@ export async function loader({ request }: LoaderArgs) {
   return json({ email: user.email }, { status: 200 });
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const fieldValues = await validator.validate(await request.formData());
   if (fieldValues.error) return validationError(fieldValues.error);
   const email = fieldValues.submittedData.email;

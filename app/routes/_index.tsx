@@ -1,11 +1,11 @@
 import { authenticator } from "~/services/auth.server";
-import type { ActionFunction, LoaderArgs } from "@remix-run/node";
+import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import React from "react";
 import { Form, Link } from "@remix-run/react";
 import Button from "~/components/button/Button";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await authenticator.isAuthenticated(request, {
     failureRedirect: "/auth/login",
   });
