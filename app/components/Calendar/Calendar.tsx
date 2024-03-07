@@ -9,7 +9,7 @@ import {
   weekDaysInitialsArray,
 } from "~/utils/calendarUtils";
 import { useNavigate } from "@remix-run/react";
-import { getDate, getDay } from "date-fns";
+import { getDate } from "date-fns";
 
 export default function Calendar({
   date,
@@ -28,7 +28,9 @@ export default function Calendar({
   const monthParam = getMonthNumber(date).toString();
   const setDate = (date: Date) => {
     navigate(
-      `/store/bookings?year=${date.getFullYear()}&month=${date.getMonth()}&day=${date.getDate()}`,
+      `/store/bookings?year=${date.getFullYear()}&month=${
+        date.getMonth() + 1
+      }&day=${date.getDate()}`,
     );
   };
   return (
