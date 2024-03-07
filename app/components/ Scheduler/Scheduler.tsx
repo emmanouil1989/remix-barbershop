@@ -3,7 +3,6 @@ import {
   getGMTOffset,
   getHoursOfTheDay,
   getWeekDatesAndNames,
-  useCalendarContext,
 } from "~/utils/calendarUtils";
 import React from "react";
 import type { SerializeFrom } from "@remix-run/node";
@@ -27,9 +26,18 @@ export type BookingsWithDaysAndHours = SerializeFrom<
 >;
 type ScheduleProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
+  dayParam: string;
+  monthParam: string;
+  yearParam: string;
+  timeView: "Week" | "Month";
 };
-export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
-  const { dayParam, monthParam, yearParam, timeView } = useCalendarContext();
+export default function Scheduler({
+  bookingsWithDaysAndHours,
+  dayParam,
+  monthParam,
+  yearParam,
+  timeView,
+}: ScheduleProps) {
   const date = dayParam
     ? new Date(Number(yearParam), Number(monthParam) - 1, Number(dayParam))
     : new Date();
@@ -37,17 +45,29 @@ export default function Scheduler({ bookingsWithDaysAndHours }: ScheduleProps) {
   if (timeView === "Week") {
     return (
       <WeekView
+        dayParam={dayParam}
+        monthParam={monthParam}
+        yearParam={yearParam}
+        timeView={timeView}
         bookingsWithDaysAndHours={bookingsWithDaysAndHours}
         weekDatesAndNamesArray={weekDatesAndNamesArray}
       />
     );
   }
 
-  return <MonthView bookingsWithDaysAndHours={bookingsWithDaysAndHours} />;
+  return (
+    <MonthView
+      bookingsWithDaysAndHours={bookingsWithDaysAndHours}
+      date={date}
+    />
+  );
 }
 
 export type ScheduleBodyProps = ScheduleHeaderProps & {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
+  monthParam: string;
+  yearParam: string;
+  timeView: "Week" | "Month";
 };
 export function ScheduleBody({
   weekDatesAndNamesArray,
@@ -139,11 +159,12 @@ export function ScheduleBody({
 
 export type ScheduleHeaderProps = {
   weekDatesAndNamesArray: ReturnType<typeof getWeekDatesAndNames>;
+  dayParam: string;
 };
 export function ScheduleHeader({
   weekDatesAndNamesArray,
+  dayParam,
 }: ScheduleHeaderProps) {
-  const { dayParam } = useCalendarContext();
   return (
     <div className="flex">
       {[

@@ -6,19 +6,31 @@ import {
   getMonthNumber,
   getNextMonth,
   getPreviousMonth,
-  useCalendarContext,
   weekDaysInitialsArray,
 } from "~/utils/calendarUtils";
-import { useNavigate, useSearchParams } from "@remix-run/react";
-import { isTypeViewType } from "~/routes/_admin.store.bookings";
+import { useNavigate } from "@remix-run/react";
+import { getDate, getDay } from "date-fns";
 
-export default function Calendar() {
-  const { dateState, dayParam, monthParam, timeView } = useCalendarContext();
-  const [date, setDate] = dateState;
+export default function Calendar({
+  date,
+  timeView,
+}: {
+  date: Date;
+  timeView: "Week" | "Month";
+}) {
+  const navigate = useNavigate();
+
   const month = getCurrentMonth(date);
   const year = getCurrentYear(date);
   const arrayOfMonthDays = getListOfSevenDayLists(date);
-  const navigate = useNavigate();
+  const dayParam = getDate(date).toString();
+
+  const monthParam = getMonthNumber(date).toString();
+  const setDate = (date: Date) => {
+    navigate(
+      `/store/bookings?year=${date.getFullYear()}&month=${date.getMonth()}&day=${date.getDate()}`,
+    );
+  };
   return (
     <div className="flex flex-col max-w-[300px] max-h-[310px] mt-16 p-4 border border-solid border-gray-600">
       <div className="flex flex-row items-center justify-between mx-4 pl-1">
@@ -111,23 +123,4 @@ export default function Calendar() {
       </div>
     </div>
   );
-}
-
-export function useInitialDateState() {
-  const [params] = useSearchParams();
-  const yearParam = params.get("year");
-  const monthParam = params.get("month");
-  const dayParam = params.get("day");
-  const timeViewParam = params.get("tableView");
-  const timeView = isTypeViewType(timeViewParam) ? timeViewParam : "Week";
-  let dateParam = undefined;
-  if (yearParam !== undefined && monthParam && dayParam) {
-    dateParam = new Date(
-      Number(yearParam),
-      Number(monthParam) - 1,
-      Number(dayParam),
-    );
-  }
-  const dateState = useState(dateParam || new Date());
-  return { dateState, dayParam, monthParam, yearParam, timeView };
 }

@@ -10,9 +10,6 @@ import {
   getHours,
   getMinutes,
 } from "date-fns";
-import type { ReactNode } from "react";
-import React, { useContext, createContext } from "react";
-import { useInitialDateState } from "~/components/Calendar/Calendar";
 
 export function getCurrentMonth(date: Date) {
   return date.toLocaleString("default", { month: "long" });
@@ -203,25 +200,6 @@ export function getHoursOfTheDay() {
   return hours;
 }
 
-type CalendarContextData = ReturnType<typeof useInitialDateState>;
-export const CalendarContext = createContext<CalendarContextData | undefined>(
-  undefined,
-);
-
-type CalendarContextProviderProps = {
-  children: ReactNode;
-};
-export function CalendarContextProvider({
-  children,
-}: CalendarContextProviderProps) {
-  const dateState = useInitialDateState();
-  return (
-    <CalendarContext.Provider value={{ ...dateState }}>
-      {children}
-    </CalendarContext.Provider>
-  );
-}
-
 // get users GMT offset
 export function getGMTOffset() {
   const offset = new Date().getTimezoneOffset();
@@ -275,13 +253,3 @@ export function getFirstAndLastDateOfMonthForAGivenDate(date: Date) {
     lastDayOfMonth,
   };
 }
-
-export const useCalendarContext = () => {
-  const context = useContext(CalendarContext);
-  if (context === undefined) {
-    throw new Error(
-      "useCalendarContext must be used within a CalendarContextProvider",
-    );
-  }
-  return context;
-};

@@ -10,11 +10,13 @@ export const useSendNotification = (
 ) => {
   const [_, setSearchParams] = useSearchParams();
   useEffect(() => {
-    setSearchParams({});
-    if (type === "Success") {
-      toast.success(message);
-    } else {
-      toast.error(message);
+    if (message) {
+      setSearchParams({});
+      if (type === "Success") {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
     }
   }, [message, type, setSearchParams]);
 };

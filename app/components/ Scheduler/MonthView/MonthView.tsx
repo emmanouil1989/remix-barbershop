@@ -1,19 +1,15 @@
 import React from "react";
-import {
-  getListOfSevenDayLists,
-  getMonthNumber,
-  useCalendarContext,
-} from "~/utils/calendarUtils";
+import { getListOfSevenDayLists, getMonthNumber } from "~/utils/calendarUtils";
 import type { BookingsWithDaysAndHours } from "../Scheduler";
 
 type MonthViewProps = {
   bookingsWithDaysAndHours: BookingsWithDaysAndHours;
+  date: Date;
 };
 export default function MonthView({
   bookingsWithDaysAndHours,
+  date,
 }: MonthViewProps) {
-  const { dateState } = useCalendarContext();
-  const [date] = dateState;
   const arrayOfMonthDays = getListOfSevenDayLists(date);
 
   return (
