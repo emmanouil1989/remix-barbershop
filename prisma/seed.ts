@@ -15,8 +15,8 @@ async function userFactory(
   const hashedPassword = await bycript.hash("password1", 10);
   const service = await serviceFactory();
   return {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
     email: `pelatis${index}@gmail.com`,
     password: hashedPassword,
     mobilePhone: faker.phone.number(),
@@ -77,7 +77,7 @@ function bookingsFactory(
 
 function storeServicesFactory(): Array<Prisma.StoreServicesCreateWithoutStoreInput> {
   return services.map(function mapToService(serviceName) {
-    const price = faker.random.numeric(2);
+    const price = faker.string.numeric(2);
     return {
       name: serviceName,
       price: Number(price),
