@@ -37,7 +37,7 @@ export const login = async (email: string, hashedPassword: string) => {
     },
   });
 
-  if (!user) {
+  if (!user || user?.password === null) {
     return null;
   }
   const isCorrectPassword = await bcrypt.compare(hashedPassword, user.password);
